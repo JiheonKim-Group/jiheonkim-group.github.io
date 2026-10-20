@@ -20,6 +20,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: withastro/action@v3
+        with:
+          node-version: 24 # Astro 7은 Node.js 22.22 이상이 필요하다
 
   deploy:
     needs: build
