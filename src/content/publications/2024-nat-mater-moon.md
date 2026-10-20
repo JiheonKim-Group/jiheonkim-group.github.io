@@ -8,5 +8,6 @@ volume: "23"
 issue: "1"
 pages: "108–115"
 doi: "10.1038/s41563-023-01707-w"
-# image: 대표 그림을 찾으면 public/images/publications/ 에 넣고 경로를 적으세요
+image: "/images/publications/2024-nat-mater-moon.png"
+highlight: ""   # 선택: 서지정보 아래 강조 문구 (예: "Highly Cited Paper"). 비워두면 표시되지 않음
 ---

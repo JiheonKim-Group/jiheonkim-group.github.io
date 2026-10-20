@@ -9,5 +9,6 @@ date: 2026-03-15          # 선택: 같은 해 논문의 순서 (늦은 날짜�
 volume: "25"              # 선택
 pages: "1393–1401"        # 선택: 쪽수 또는 논문 번호
 doi: "10.1038/xxxxx"      # 선택: LINK 버튼이 doi.org 로 연결됨
-image: /images/publications/2026-nature-materials.png   # 선택: 대표 그림
+image: /images/publications/2026-nature-materials.png   # 선택: 대표 그림 (/images/publications/ + 파일 이름)
+highlight: ""             # 선택: 서지정보 아래 강조 문구 (예: "Highly Cited Paper"). 비워두면 표시되지 않음
 ---

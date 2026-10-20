@@ -8,5 +8,6 @@ volume: "3"
 issue: "9"
 pages: "779–794"
 doi: "10.1016/j.trechm.2021.05.009"
-# image: 대표 그림을 찾으면 public/images/publications/ 에 넣고 경로를 적으세요
+image: "/images/publications/2021-trends-chem-kim.png"
+highlight: ""   # 선택: 서지정보 아래 강조 문구 (예: "Highly Cited Paper"). 비워두면 표시되지 않음
 ---

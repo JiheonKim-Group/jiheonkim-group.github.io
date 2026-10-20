@@ -8,5 +8,6 @@ volume: "146"
 issue: "18"
 pages: "12556–12564"
 doi: "10.1021/jacs.4c01219"
-# image: 대표 그림을 찾으면 public/images/publications/ 에 넣고 경로를 적으세요
+image: "/images/publications/2024-jacs-yang.png"
+highlight: ""   # 선택: 서지정보 아래 강조 문구 (예: "Highly Cited Paper"). 비워두면 표시되지 않음
 ---

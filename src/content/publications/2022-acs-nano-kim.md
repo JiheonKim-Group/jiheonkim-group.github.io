@@ -8,5 +8,6 @@ volume: "16"
 issue: "10"
 pages: "16529–16538"
 doi: "10.1021/acsnano.2c05856"
-# image: 대표 그림을 찾으면 public/images/publications/ 에 넣고 경로를 적으세요
+image: "/images/publications/2022-acs-nano-kim.png"
+highlight: ""   # 선택: 서지정보 아래 강조 문구 (예: "Highly Cited Paper"). 비워두면 표시되지 않음
 ---

@@ -1,3 +1,12 @@
+/* 상단 "Jiheon Kim Group" 글씨체 (Source Sans 3, 사이트 안에 포함된 파일) */
+@font-face {
+  font-family: 'Source Sans 3';
+  font-style: normal;
+  font-weight: 200 900;
+  font-display: swap;
+  src: url('/fonts/source-sans-3-latin.woff2') format('woff2');
+}
+
 /* 임시 기본 스타일 — 본격적인 디자인은 별도 작업에서 정한다. */
 :root {
   --color-text: #1a1a1a;

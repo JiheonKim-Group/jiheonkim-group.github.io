@@ -20,7 +20,10 @@ const mainLinks = [
 
 <header class="site-header">
   <div class="inner">
-    <a class="brand" href="/"><span class="brand-name">Jiheon Kim</span> <span class="brand-group">Group</span></a>
+    <a class="brand" href="/">
+      <img class="brand-logo" src="/images/logo/kaist-logo-white.png" alt="KAIST" width="332" height="94" />
+      <span class="brand-text"><span class="brand-name">Jiheon Kim</span> <span class="brand-group">Group</span></span>
+    </a>
 
     <nav class="main" aria-label="Main">
       <ul>
@@ -28,7 +31,7 @@ const mainLinks = [
           <li class={link.children ? 'has-children' : undefined}>
             <a href={link.href}>
               {link.label}
-              {link.children && <span class="caret" aria-hidden="true">▾</span>}
+              {link.children && <span class="caret" aria-hidden="true"></span>}
             </a>
             {link.children && (
               <ul class="dropdown">
@@ -45,8 +48,9 @@ const mainLinks = [
 </header>
 
 <style>
+  /* 상단 배너: KAIST Medium Blue 배경 */
   .site-header {
-    border-bottom: 1px solid #e5e5e5;
+    background: var(--color-accent-medium);
   }
 
   .inner {
@@ -60,22 +64,34 @@ const mainLinks = [
   }
 
   .brand {
+    font-family: 'Source Sans 3', system-ui, sans-serif;
     font-size: 1.75rem;
     line-height: 1.2;
     letter-spacing: -0.02em;
     text-decoration: none;
     text-transform: none;
     white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  /* KAIST 로고와 이름 사이 얇은 세로선 */
+  .brand-logo {
+    height: 30px;
+    width: auto;
+    padding-right: 14px;
+    border-right: 1px solid rgba(255, 255, 255, 0.45);
   }
 
   .brand-name {
-    font-weight: 700;
-    color: var(--color-accent-medium);
+    font-weight: 400;
+    color: #fff;
   }
 
   .brand-group {
     font-weight: 300;
-    color: var(--color-muted);
+    color: #b9dcf4;
   }
 
   a {
@@ -107,16 +123,21 @@ const mainLinks = [
     padding: 4px 0;
     font-size: 0.8rem;
     font-weight: 500;
-    color: #333;
+    color: #fff;
   }
 
   .main > ul > li > a:hover {
-    color: var(--color-accent);
+    color: #b9dcf4;
   }
 
+  /* Team 옆 아래 방향 세모 (CSS로 그려서 글꼴과 상관없이 선명하게) */
   .caret {
-    margin-left: 4px;
-    font-size: 0.7em;
+    display: inline-block;
+    margin-left: 6px;
+    vertical-align: 0.2em;
+    border-left: 4.5px solid transparent;
+    border-right: 4.5px solid transparent;
+    border-top: 5.5px solid currentColor;
   }
 
   /* 하위 메뉴: 마우스를 올리거나 키보드로 이동하면 펼쳐진다 */
@@ -166,6 +187,10 @@ const mainLinks = [
 
     .brand {
       font-size: 1.5rem;
+    }
+
+    .brand-logo {
+      height: 26px;
     }
   }
 </style>

@@ -8,5 +8,6 @@ volume: "35"
 issue: "19"
 pages: "2207666"
 doi: "10.1002/adma.202207666"
-# image: 대표 그림을 찾으면 public/images/publications/ 에 넣고 경로를 적으세요
+image: "/images/publications/2023-adv-mater-kim.png"
+highlight: ""   # 선택: 서지정보 아래 강조 문구 (예: "Highly Cited Paper"). 비워두면 표시되지 않음
 ---

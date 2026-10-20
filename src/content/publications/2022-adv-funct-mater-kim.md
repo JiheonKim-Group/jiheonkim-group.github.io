@@ -8,5 +8,6 @@ volume: "32"
 issue: "19"
 pages: "2110857"
 doi: "10.1002/adfm.202110857"
-# image: 대표 그림을 찾으면 public/images/publications/ 에 넣고 경로를 적으세요
+image: "/images/publications/2022-adv-funct-mater-kim.jpg"
+highlight: ""   # 선택: 서지정보 아래 강조 문구 (예: "Highly Cited Paper"). 비워두면 표시되지 않음
 ---

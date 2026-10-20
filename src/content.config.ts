@@ -28,8 +28,8 @@ const publications = defineCollection({
     pages: z.string().optional(), // 쪽수 또는 논문 번호 (예: "1393–1401", "e7864662")
     doi: z.string().optional(), // 예: 10.1038/s41563-025-00000-0
     url: z.string().optional(), // DOI가 없을 때 연결할 주소
-    image: z.string().optional(), // 예: /images/publications/2026-nature-materials.png
-    highlight: z.boolean().default(false),
+    image: z.string().optional(), // 예: /images/publications/2026-nat-mater-kim.png
+    highlight: z.string().optional(), // 선택: 서지정보 아래 강조 문구 (예: "Highly Cited Paper", "Cover Article")
   }),
 });
 
