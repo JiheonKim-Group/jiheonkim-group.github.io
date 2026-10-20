@@ -11,7 +11,8 @@ const team = defineCollection({
     role: z.string(),
     position: z.array(z.string()).optional(), // 이름 아래 직위 (줄마다 1개)
     email: z.string().optional(),
-    address: z.string().optional(),
+    office: z.string().optional(), // 교수실 주소
+    lab: z.string().optional(), // 실험실 주소
     phone: z.string().optional(),
     photo: z.string().optional(), // 예: /images/people/jiheon-kim.jpg
     joined: z.coerce.date().optional(),

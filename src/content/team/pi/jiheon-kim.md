@@ -7,20 +7,21 @@ position:
   - Assistant Professor
   - Department of Chemical and Biomolecular Engineering, KAIST
 email: jiheon.kim@kaist.ac.kr
-address: Bldg. W1-3, Rm. 3107, KAIST, 291 Daehak-ro, Yuseong-gu, Daejeon 34141, Republic of Korea
+office: Bldg. W1-3, Rm. 3107, KAIST, 291 Daehak-ro, Yuseong-gu, Daejeon 34141, Republic of Korea
+lab: Bldg. W14 (Lotte-KAIST R&D Center), Rm. 401B, KAIST, 291 Daehak-ro, Yuseong-gu, Daejeon 34141, Republic of Korea
 phone: "+82-42-350-3944"   # 예: "+82-42-350-0000" (비워두면 표시되지 않음)
 photo: /images/people/jiheon-kim.jpg
-# 아이콘 링크: icon 은 scholar / linkedin / orcid 중 하나. url 을 적으면 아이콘이 나타난다.
+# 링크 (아이콘 + 이름, 적은 순서대로 | 로 구분해 표시). icon 은 scholar / orcid / linkedin 중 하나.
 links:
   - icon: scholar
     label: Google Scholar
     url: https://scholar.google.com/citations?user=-csqx7IAAAAJ
-  # - icon: linkedin
-  #   label: LinkedIn
-  #   url: https://www.linkedin.com/in/아이디
-  # - icon: orcid
-  #   label: ORCID
-  #   url: https://orcid.org/0000-0000-0000-0000
+  - icon: orcid
+    label: ORCID
+    url: https://orcid.org/0000-0002-8681-6793
+  - icon: linkedin
+    label: LinkedIn
+    url: https://www.linkedin.com/in/jiheonkim10
 # 아래 항목(cv)은 PI 소개 아래에 표로 나온다. period(기간)와 text(내용)를 적고, 지도교수는 advisor 에 적는다(선택, 다음 줄에 기울임체로 표시).
 cv:
   - heading: Education

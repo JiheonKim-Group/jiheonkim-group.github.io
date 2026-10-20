@@ -1,7 +1,13 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection, render } from 'astro:content';
-import Icon from '../components/LinkIcon.astro';
+
+// 링크 아이콘(public/images/logo/)과 글자색(각 로고의 대표색)
+const linkStyles = {
+  scholar: { src: '/images/logo/googlescholar.webp', color: '#4285F4' },
+  orcid: { src: '/images/logo/orcid.webp', color: '#A6CE39' },
+  linkedin: { src: '/images/logo/linkedin.svg', color: '#0A66C2' },
+};
 
 // 하위 폴더 이름(pi/members/alumni)으로 구성원을 나눈다.
 const team = await getCollection('team');
@@ -38,19 +44,25 @@ const groups = [
               {d.position && <p class="pi-position">{d.position.map((line) => <span>{line}</span>)}</p>}
               <dl class="pi-contact">
                 {d.email && <><dt>Email</dt><dd><a href={`mailto:${d.email}`}>{d.email}</a></dd></>}
-                {d.address && <><dt>Address</dt><dd>{d.address}</dd></>}
+                {d.office && <><dt>Office</dt><dd>{d.office}</dd></>}
+                {d.lab && <><dt>Lab</dt><dd>{d.lab}</dd></>}
                 {d.phone && <><dt>Tel.</dt><dd><a href={`tel:${d.phone.replace(/[^+\d]/g, '')}`}>{d.phone}</a></dd></>}
               </dl>
               {d.links && d.links.length > 0 && (
-                <ul class="pi-links">
-                  {d.links.map((l) => (
-                    <li>
-                      <a href={l.url} target="_blank" rel="noopener" aria-label={l.label} title={l.label}>
-                        <Icon name={l.icon} label={l.label} />
-                      </a>
-                    </li>
-                  ))}
-                </ul>
+                <p class="pi-links">
+                  {d.links.map((l, i) => {
+                    const st = l.icon ? linkStyles[l.icon] : undefined;
+                    return (
+                      <>
+                        {i > 0 && <span class="bar" aria-hidden="true">|</span>}
+                        <a href={l.url} target="_blank" rel="noopener" style={st && `color:${st.color}`}>
+                          {st && <img src={st.src} alt="" width="20" height="20" />}
+                          {l.label}
+                        </a>
+                      </>
+                    );
+                  })}
+                </p>
               )}
             </div>
           </div>
@@ -172,7 +184,7 @@ const groups = [
     font-weight: 600;
   }
 
-  /* 연락처: 항목 이름(Email·Address·Tel.)과 내용을 두 열로 */
+  /* 연락처: 항목 이름(Email·Office·Lab·Tel.)과 내용을 두 열로 */
   .pi-contact {
     display: grid;
     grid-template-columns: auto 1fr;
@@ -194,24 +206,37 @@ const groups = [
     color: inherit;
   }
 
-  /* 아이콘 링크 (Google Scholar · LinkedIn · ORCID) */
+  /* 링크: 아이콘 + 이름, 사이에 | */
   .pi-links {
     display: flex;
-    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 12px;
     margin: 0 0 24px;
-    padding: 0;
-    list-style: none;
+    font-size: 0.95rem;
+    font-weight: 600;
   }
 
   .pi-links a {
-    display: block;
-    width: 30px;
-    height: 30px;
-    transition: opacity 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
   }
 
   .pi-links a:hover {
-    opacity: 0.7;
+    text-decoration: underline;
+  }
+
+  .pi-links img {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+  }
+
+  .pi-links .bar {
+    color: #bbb;
+    font-weight: 400;
   }
 
   .pi-bio :global(p) {
