@@ -1,0 +1,18 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const topics = await getCollection('research');
+  return topics.map((topic) => ({ params: { id: topic.id }, props: { topic } }));
+}
+
+const { topic } = Astro.props;
+const { Content } = await render(topic);
+---
+
+<BaseLayout title={topic.data.title}>
+  <h1>{topic.data.title}</h1>
+  {topic.data.image && <img src={topic.data.image} alt={topic.data.title} />}
+  <Content />
+</BaseLayout>

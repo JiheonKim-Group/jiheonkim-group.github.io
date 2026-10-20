@@ -1,0 +1,27 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import fs from 'node:fs';
+
+// public/images/gallery/ 에 넣은 사진을 빌드 시 자동으로 모두 표시한다 (파일명 역순 = 최신순).
+const dir = 'public/images/gallery';
+const photos = fs.existsSync(dir)
+  ? fs.readdirSync(dir).filter((f) => /\.(jpe?g|png|webp|gif|avif)$/i.test(f)).sort().reverse()
+  : [];
+---
+
+<BaseLayout title="Gallery">
+  <h1>Gallery</h1>
+  {photos.length === 0 ? <p>Coming soon.</p> : (
+    <div class="grid">
+      {photos.map((f) => <img src={`/images/gallery/${f}`} alt="" loading="lazy" />)}
+    </div>
+  )}
+</BaseLayout>
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 12px;
+  }
+</style>

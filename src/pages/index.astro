@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const news = (await getCollection('news'))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+---
+
+<BaseLayout>
+  <h1>Jiheon Kim Group</h1>
+  <p>Autonomous materials research for decarbonization — combining robotics, AI, and human expertise.</p>
+  <p>Department of Chemical and Biomolecular Engineering, KAIST</p>
+
+  {news.length > 0 && (
+    <section>
+      <h2>Latest News</h2>
+      <ul>
+        {news.map((item) => (
+          <li>{item.data.date.toISOString().slice(0, 10)} — {item.data.title}</li>
+        ))}
+      </ul>
+    </section>
+  )}
+</BaseLayout>

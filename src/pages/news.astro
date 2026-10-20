@@ -1,0 +1,19 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+const items = (await getCollection('news')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const rendered = await Promise.all(items.map(async (item) => ({ item, ...(await render(item)) })));
+---
+
+<BaseLayout title="News">
+  <h1>News</h1>
+  {rendered.length === 0 ? <p>Coming soon.</p> : rendered.map(({ item, Content }) => (
+    <article>
+      <h2>{item.data.title}</h2>
+      <p><time datetime={item.data.date.toISOString()}>{item.data.date.toISOString().slice(0, 10)}</time></p>
+      {item.data.image && <img src={item.data.image} alt={item.data.title} />}
+      <Content />
+    </article>
+  ))}
+</BaseLayout>

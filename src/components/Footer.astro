@@ -1,0 +1,183 @@
+---
+// 하단 배너. 연락처·링크를 바꾸려면 아래 값만 고치면 된다.
+const kaistUrl = 'https://www.kaist.ac.kr/en/';
+const cbeUrl = 'https://cbe.kaist.ac.kr/';
+const pi = { name: 'Jiheon Kim', email: 'jiheon.kim@kaist.ac.kr' };
+// 주소는 줄 단위로 나눠 적는다 (한 줄 = 화면의 한 줄).
+// \u2011 은 줄이 끊기지 않는 하이픈(-), \u00a0 은 줄이 끊기지 않는 띄어쓰기다.
+const address = [
+  'Bldg. W1\u20113, Rm. 3107, KAIST, 291\u00a0Daehak\u2011ro,',
+  'Yuseong\u2011gu, Daejeon\u00a034141, Republic of Korea',
+];
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="inner">
+    <!-- 두 로고는 같은 폭·같은 격자로 만들어져 있어, 마크와 글씨 줄이 위아래로 정확히 맞는다 -->
+    <div class="logos">
+      <a href={kaistUrl} target="_blank" rel="noopener">
+        <img
+          src="/images/logo/kaist-lockup.svg"
+          alt="KAIST — Korea Advanced Institute of Science and Technology"
+          width="1013"
+          height="119"
+        />
+      </a>
+      <a class="cbe" href={cbeUrl} target="_blank" rel="noopener">
+        <img
+          src="/images/logo/cbe-lockup.svg"
+          alt="Department of Chemical & Biomolecular Engineering, KAIST"
+          width="1013"
+          height="105"
+        />
+      </a>
+    </div>
+
+    <div class="info">
+      <p class="heading">Contact</p>
+      <p class="name">{pi.name} <span>(PI)</span></p>
+      <dl>
+        <dt>Email</dt>
+        <dd><a href={`mailto:${pi.email}`}>{pi.email}</a></dd>
+        <dt>Address</dt>
+        <dd>{address.map((line) => <><span class="line">{line}</span>{' '}</>)}</dd>
+      </dl>
+    </div>
+  </div>
+  <p class="copyright">© {year} Jiheon Kim Group, KAIST</p>
+</footer>
+
+<style>
+  /* 하단 전체를 회색 띠로 덮는다 */
+  .site-footer {
+    margin-top: 64px;
+    background: #ececec;
+  }
+
+  .inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 40px 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 32px;
+  }
+
+  /* 왼쪽 로고 */
+  .logos {
+    flex: 0 0 440px;
+  }
+
+  .logos a,
+  .logos img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  /* 두 로고 사이 간격: 로고 폭에 비례 (원본 격자 기준) */
+  .logos .cbe {
+    margin-top: 4.3%;
+  }
+
+  /* 오른쪽 정보 상자 */
+  .info {
+    flex: 0 1 420px;
+    /* 글씨 위·아래 끝이 왼쪽 로고의 위·아래 끝과 맞도록 미세 조정 */
+    margin-top: -3px;
+    font-size: 0.875rem;
+    line-height: 20px;
+    color: #555;
+  }
+
+  .info p {
+    margin: 0;
+  }
+
+  .info .heading {
+    margin-bottom: 11px;
+    font-size: 0.8rem;
+    line-height: 16px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    color: #444;
+  }
+
+  .info .name {
+    margin-bottom: 9px;
+    font-weight: 700;
+    color: #333;
+  }
+
+  .info .name span {
+    font-weight: 400;
+    color: #666;
+  }
+
+  /* 항목 이름(Email, Address)과 내용을 두 열로 정렬 */
+  .info dl {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 4px 16px;
+    align-items: baseline;
+    margin: 0;
+  }
+
+  .info dt {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #888;
+  }
+
+  .info dd {
+    margin: 0;
+  }
+
+  .info .line {
+    display: block;
+  }
+
+  .info a {
+    color: var(--color-accent-light);
+    text-decoration: none;
+  }
+
+  .info a:hover {
+    text-decoration: underline;
+  }
+
+  .copyright {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 16px 24px;
+    color: var(--color-muted);
+    font-size: 0.75rem;
+  }
+
+  /* 휴대폰 화면: 로고 아래에 정보 상자 */
+  @media (max-width: 900px) {
+    .inner {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .logos,
+    .info {
+      flex-basis: auto;
+    }
+
+    .logos {
+      max-width: 380px;
+    }
+
+    /* 좁은 화면에서는 주소를 한 문단으로 자연스럽게 이어 쓴다 */
+    .info .line {
+      display: inline;
+    }
+  }
+</style>

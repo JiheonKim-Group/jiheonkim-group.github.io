@@ -19,7 +19,9 @@ KAIST 생명화학공학과 김지헌 교수 연구실(자율실험실(SDL)·전
   - `team/members/`          Current Members (현 구성원)
   - `team/alumni/`           Alumni (졸업·퇴임 구성원) — 졸업 시 members/ → alumni/ 로 파일 이동
   - 구분은 하위 폴더로 결정되며, 홈페이지 Team 페이지에서 PI → Current Members → Alumni 순으로 표시
-- `src/content/publications/`  논문 1편 = Markdown 1개 (title, authors, journal, year, doi, highlight)
+- `src/content/publications/`  논문 1편 = Markdown 1개 (title, authors, journal, year, date, volume, issue, pages, doi, url, image, highlight)
+  - `_template.md`를 복사해서 작성 (이름이 `_`로 시작하는 파일은 홈페이지에 나오지 않음)
+  - 번호는 오래된 논문부터 자동으로 매겨지고, 연도 필터 버튼도 자동 생성됨
 - `src/content/news/`          소식 1건 = Markdown 1개 (date, title)
 - `src/content/research/`      연구 주제 페이지
 - `public/images/`             이미지 (용도별 하위 폴더)

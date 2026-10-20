@@ -1,0 +1,12 @@
+---
+title: "Structural Insights into Multi‐Metal Spinel Oxide Nanoparticles for Boosting Oxygen Reduction Electrocatalysis"
+authors: "Jiheon Kim†, Wonjae Ko†, Ji Mun Yoo†, Vinod K. Paidi†, Ho Yeon Jang, Michael Shepit, Jongmin Lee, Hogeun Chang, Hyeon Seok Lee, Jinwoung Jo, Byung Hyo Kim, Sung‐Pyo Cho, Johan van Lierop, Dokyoon Kim, Kug‐Seung Lee*, Seoin Back*, Yung‐Eun Sung* & Taeghwan Hyeon*"
+journal: "Adv. Mater."
+year: 2022
+date: 2022-01-11
+volume: "34"
+issue: "8"
+pages: "2107868"
+doi: "10.1002/adma.202107868"
+# image: 대표 그림을 찾으면 public/images/publications/ 에 넣고 경로를 적으세요
+---

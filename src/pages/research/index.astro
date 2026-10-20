@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const topics = (await getCollection('research')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<BaseLayout title="Research">
+  <h1>Research</h1>
+  {topics.length === 0 ? <p>Coming soon.</p> : (
+    <ul>
+      {topics.map((t) => (
+        <li><a href={`/research/${t.id}`}>{t.data.title}</a>{t.data.summary && <> — {t.data.summary}</>}</li>
+      ))}
+    </ul>
+  )}
+</BaseLayout>

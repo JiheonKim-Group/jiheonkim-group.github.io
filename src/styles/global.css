@@ -1,0 +1,29 @@
+/* 임시 기본 스타일 — 본격적인 디자인은 별도 작업에서 정한다. */
+:root {
+  --color-text: #1a1a1a;
+  --color-muted: #666;
+  --color-bg: #fff;
+  --color-accent: #004191;        /* KAIST 파란색 */
+  --color-accent-light: #1588ca;  /* KAIST 밝은 파란색 (로고 아래 곡선 색) */
+  --color-accent-medium: #265ba5; /* KAIST Medium Blue (PANTONE 285C, 가이드 색상표 기준) */
+  --max-width: 1200px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+  line-height: 1.6;
+  color: var(--color-text);
+  background: var(--color-bg);
+}
+
+a { color: var(--color-accent); }
+img { max-width: 100%; height: auto; }
+
+.container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 16px;
+}
