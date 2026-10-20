@@ -1,5 +1,4 @@
 ---
-import fs from 'node:fs';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 
@@ -8,9 +7,12 @@ const heroTitle = 'Accelerating the discovery of materials and devices for decar
 const heroText =
   'By combining robotics, AI, and human expertise, the Jiheon Kim Group at KAIST builds self-driving laboratories that explore materials and devices faster, smarter, and more reproducibly.';
 
-// 오른쪽 영상: public/videos/chemspeed.mp4 를 넣으면 자동으로 재생된다.
-const videoSrc = '/videos/chemspeed.mp4';
-const hasVideo = fs.existsSync(`public${videoSrc}`);
+// 오른쪽 영상 목록. 좌우 화살표로 넘겨 볼 수 있고, 첫 번째 영상이 먼저 재생된다.
+// 영상은 public/videos/ 에 웹용으로 줄인 파일(이름 끝 -web.mp4)로 넣는다.
+const videos = [
+  { src: '/videos/chemspeed-web.mp4', label: 'Chemspeed robotic platform' },
+  { src: '/videos/ot2-web.mp4', label: 'Opentrons OT-2' },
+];
 
 const news = (await getCollection('news'))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
@@ -26,11 +28,28 @@ const news = (await getCollection('news'))
       <a class="hero-button" href="/research">Explore our research</a>
     </div>
     <div class="hero-media">
-      {hasVideo ? (
-        <video src={videoSrc} autoplay muted loop playsinline aria-label="Chemspeed robotic platform"></video>
-      ) : (
-        <div class="media-empty">Chemspeed video<br /><small>public/videos/chemspeed.mp4</small></div>
-      )}
+      <div class="slider">
+        <div class="frame">
+        {videos.map((v, i) => (
+          <video
+            src={v.src}
+            class={i === 0 ? 'active' : undefined}
+            autoplay={i === 0}
+            preload={i === 0 ? 'auto' : 'metadata'}
+            muted
+            loop
+            playsinline
+            aria-label={v.label}
+          ></video>
+        ))}
+        {videos.length > 1 && (
+          <>
+            <button class="nav prev" type="button" aria-label="Previous video">&#8249;</button>
+            <button class="nav next" type="button" aria-label="Next video">&#8250;</button>
+          </>
+        )}
+        </div>
+      </div>
     </div>
     </div>
   </section>
@@ -46,6 +65,26 @@ const news = (await getCollection('news'))
     </section>
   )}
 </BaseLayout>
+
+<script>
+  // 화살표를 누르면 다음/이전 영상으로 바꾸고 처음부터 재생한다
+  const slider = document.querySelector('.slider');
+  if (slider) {
+    const vids = [...slider.querySelectorAll('video')];
+    let current = 0;
+    const show = (n: number) => {
+      vids[current].pause();
+      vids[current].classList.remove('active');
+      current = (n + vids.length) % vids.length;
+      const v = vids[current];
+      v.classList.add('active');
+      v.currentTime = 0;
+      v.play();
+    };
+    slider.querySelector('.prev')?.addEventListener('click', () => show(current - 1));
+    slider.querySelector('.next')?.addEventListener('click', () => show(current + 1));
+  }
+</script>
 
 <style>
   /* 첫 화면: 회색 바탕은 화면 폭 전체, 문구와 영상은 상단 메뉴와 같은 폭 안에 정렬 */
@@ -111,23 +150,60 @@ const news = (await getCollection('news'))
     align-items: center;
   }
 
-  /* 영상이 잘리지 않도록 칸 폭에 맞춰 원래 비율 그대로 보여준다 */
-  .hero-media video {
-    display: block;
+  /* 영상 칸: 높이는 Chemspeed 영상 비율(1328×836) 기준으로 고정.
+     세로로 긴 영상은 같은 높이로 가운데에 두고, 양옆은 배경(회색) 그대로 둔다 */
+  .slider {
     width: 100%;
-    height: auto;
+    aspect-ratio: 1328 / 836;
+    display: flex;
+    justify-content: center;
   }
 
-  .media-empty {
-    width: 100%;
-    aspect-ratio: 16 / 10;
-    background: #d9d9d9;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    color: #888;
+  /* 실제 영상 크기에 딱 맞는 틀 — 화살표가 영상 양 끝에 붙는다 */
+  .frame {
+    position: relative;
+    height: 100%;
+    max-width: 100%;
+  }
+
+  .slider video {
+    height: 100%;
+    width: auto;
+    max-width: 100%;
+    display: none;
+  }
+
+  .slider video.active {
+    display: block;
+  }
+
+  /* 좌우 화살표 */
+  .nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    padding: 0 0 4px;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.45);
+    color: #fff;
+    font-size: 30px;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  .nav:hover {
+    background: var(--color-accent-medium);
+  }
+
+  .prev {
+    left: 12px;
+  }
+
+  .next {
+    right: 12px;
   }
 
   .news {
