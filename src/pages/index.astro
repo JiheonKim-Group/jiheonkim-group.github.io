@@ -1,4 +1,5 @@
 ---
+import fs from 'node:fs';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 
@@ -7,12 +8,19 @@ const heroTitle = 'Accelerating the development of materials and devices for dec
 const heroText =
   'Grounded in human domain expertise and powered by robotics and AI, we build autonomous laboratories that develop materials and optimize devices for next-generation decarbonization technologies—faster, smarter, and more reproducibly.';
 
-// 오른쪽 영상 목록. 좌우 화살표로 넘겨 볼 수 있고, 첫 번째 영상이 먼저 재생된다.
-// 영상은 public/videos/ 에 웹용으로 줄인 파일(이름 끝 -web.mp4)로 넣는다.
-const videos = [
-  { src: '/videos/chemspeed-web.mp4', label: 'Chemspeed robotic platform' },
-  { src: '/videos/ot2-web.mp4', label: 'Opentrons OT-2' },
-];
+// 오른쪽 슬라이드: public/home/ 폴더의 영상(.mp4 .webm)·사진(.jpg .png .webp)을 파일 이름 순서로 자동 표시.
+// 순서는 파일 이름 앞 번호로 정한다 (예: 01-chemspeed.mp4, 02-ot2.mp4, 03-ocx25-dataset.webp).
+const videoExt = /\.(mp4|webm)$/i;
+const imageExt = /\.(jpe?g|png|webp|gif)$/i;
+const slides = fs
+  .readdirSync('public/home')
+  .filter((f) => videoExt.test(f) || imageExt.test(f))
+  .sort()
+  .map((f) => ({
+    src: `/home/${f}`,
+    type: videoExt.test(f) ? 'video' : 'image',
+    label: f.replace(/^\d+[-_]?/, '').replace(/\.[^.]+$/, '').replace(/[-_]/g, ' '),
+  }));
 
 const news = (await getCollection('news'))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
@@ -30,19 +38,23 @@ const news = (await getCollection('news'))
     <div class="hero-media">
       <div class="slider">
         <div class="frame">
-        {videos.map((v, i) => (
-          <video
-            src={v.src}
-            class={i === 0 ? 'active' : undefined}
-            autoplay={i === 0}
-            preload={i === 0 ? 'auto' : 'metadata'}
-            muted
-            loop
-            playsinline
-            aria-label={v.label}
-          ></video>
-        ))}
-        {videos.length > 1 && (
+        {slides.map((v, i) =>
+          v.type === 'video' ? (
+            <video
+              src={v.src}
+              class={i === 0 ? 'slide active' : 'slide'}
+              autoplay={i === 0}
+              preload={i === 0 ? 'auto' : 'metadata'}
+              muted
+              loop
+              playsinline
+              aria-label={v.label}
+            ></video>
+          ) : (
+            <img src={v.src} class={i === 0 ? 'slide active' : 'slide'} alt={v.label} loading={i === 0 ? 'eager' : 'lazy'} />
+          ),
+        )}
+        {slides.length > 1 && (
           <>
             <button class="nav prev" type="button" aria-label="Previous video">&#8249;</button>
             <button class="nav next" type="button" aria-label="Next video">&#8250;</button>
@@ -67,19 +79,22 @@ const news = (await getCollection('news'))
 </BaseLayout>
 
 <script>
-  // 화살표를 누르면 다음/이전 영상으로 바꾸고 처음부터 재생한다
+  // 화살표를 누르면 다음/이전 슬라이드로 바꾼다. 영상이면 처음부터 재생한다.
   const slider = document.querySelector('.slider');
   if (slider) {
-    const vids = [...slider.querySelectorAll('video')];
+    const items = [...slider.querySelectorAll<HTMLElement>('.slide')];
     let current = 0;
     const show = (n: number) => {
-      vids[current].pause();
-      vids[current].classList.remove('active');
-      current = (n + vids.length) % vids.length;
-      const v = vids[current];
-      v.classList.add('active');
-      v.currentTime = 0;
-      v.play();
+      const prev = items[current];
+      if (prev instanceof HTMLVideoElement) prev.pause();
+      prev.classList.remove('active');
+      current = (n + items.length) % items.length;
+      const next = items[current];
+      next.classList.add('active');
+      if (next instanceof HTMLVideoElement) {
+        next.currentTime = 0;
+        next.play();
+      }
     };
     slider.querySelector('.prev')?.addEventListener('click', () => show(current - 1));
     slider.querySelector('.next')?.addEventListener('click', () => show(current + 1));
@@ -166,14 +181,19 @@ const news = (await getCollection('news'))
     max-width: 100%;
   }
 
-  .slider video {
+  .slide {
     height: 100%;
     width: auto;
     max-width: 100%;
     display: none;
   }
 
-  .slider video.active {
+  img.slide {
+    object-fit: contain;
+    background: #fff;
+  }
+
+  .slide.active {
     display: block;
   }
 

@@ -30,6 +30,8 @@ KAIST 생명화학공학과 김지헌 교수 연구실(자율실험실(SDL)·전
   - `images/publications/`   논문 대표 그림·표지 (publications에서 참조)
   - `images/news/`           뉴스 사진 (news에서 참조)
   - `images/gallery/`        연구실 활동 사진 (Gallery 페이지에 자동 표시)
+- `public/home/`              홈 첫 화면 오른쪽 슬라이드(영상 .mp4·사진 .jpg/.png/.webp). 파일 이름 순서로 화살표 넘김 (예: `01-chemspeed.mp4`)
+  - 웹용으로 줄인 파일만 넣는다 (영상 10MB 안팎, 사진 1MB 이하 권장)
   - Markdown에서는 `/images/<폴더>/<파일명>` 형태로 적는다 (예: `photo: /images/people/jiheon-kim.jpg`)
   - 파일명은 영문 소문자·숫자·하이픈만 사용 (예: `2025-group-photo.jpg`)
 - `src/layouts/`, `src/components/`, `src/styles/`  디자인 코드 — 내용 갱신 시 건드리지 않음
