@@ -7,10 +7,23 @@ const team = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/team' }),
   schema: z.object({
     name: z.string(),
+    degree: z.string().optional(), // 예: Ph.D.
     role: z.string(),
+    position: z.array(z.string()).optional(), // 이름 아래 직위 (줄마다 1개)
     email: z.string().optional(),
+    address: z.string().optional(),
+    phone: z.string().optional(),
     photo: z.string().optional(), // 예: /images/people/jiheon-kim.jpg
     joined: z.coerce.date().optional(),
+    links: z.array(z.object({ icon: z.enum(['scholar', 'linkedin', 'orcid']).optional(), label: z.string(), url: z.string() })).optional(), // 아이콘 링크
+    cv: z
+      .array(
+        z.object({
+          heading: z.string(),
+          items: z.array(z.object({ period: z.coerce.string(), text: z.string(), advisor: z.string().optional() })), // period 는 2024 처럼 숫자만 적어도 됨
+        }),
+      )
+      .optional(),
   }),
 });
 

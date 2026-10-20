@@ -160,6 +160,24 @@ const year = new Date().getFullYear();
   }
 
   /* 휴대폰 화면: 로고 아래에 정보 상자 */
+  /* 넓은 화면: 홈 첫 화면과 같은 5 : 6 칸 나눔 → Contact 상자를 오른쪽 칸(영상) 가운데에 맞춘다 */
+  @media (min-width: 901px) {
+    .inner {
+      display: grid;
+      grid-template-columns: 5fr 6fr;
+      gap: 48px;
+    }
+
+    .logos {
+      width: 440px;
+    }
+
+    .info {
+      justify-self: center;
+      width: max-content;
+    }
+  }
+
   @media (max-width: 900px) {
     .inner {
       flex-direction: column;

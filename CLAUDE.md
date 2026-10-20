@@ -14,7 +14,7 @@ KAIST 생명화학공학과 김지헌 교수 연구실(자율실험실(SDL)·전
 - `npm run preview` : 빌드 결과 미리보기
 
 ## 디렉터리 규칙 (내용과 디자인 분리)
-- `src/content/team/`        구성원 1명 = Markdown 1개 (frontmatter: name, role, email, photo, joined)
+- `src/content/team/`        구성원 1명 = Markdown 1개 (frontmatter: name, degree, role, email, photo, joined, links, cv / 본문: 소개글)
   - `team/pi/`               PI (교수)
   - `team/members/`          Current Members (현 구성원)
   - `team/alumni/`           Alumni (졸업·퇴임 구성원) — 졸업 시 members/ → alumni/ 로 파일 이동

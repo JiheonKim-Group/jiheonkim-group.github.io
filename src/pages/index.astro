@@ -3,9 +3,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 
 // 첫 화면 문구. 문장을 바꾸려면 여기만 고치면 된다.
-const heroTitle = 'Accelerating the discovery of materials and devices for decarbonization';
+const heroTitle = 'Accelerating the development of materials and devices for decarbonization';
 const heroText =
-  'By combining robotics, AI, and human expertise, the Jiheon Kim Group at KAIST builds self-driving laboratories that explore materials and devices faster, smarter, and more reproducibly.';
+  'Grounded in human domain expertise and powered by robotics and AI, we build autonomous laboratories that develop materials and optimize devices for next-generation decarbonization technologies—faster, smarter, and more reproducibly.';
 
 // 오른쪽 영상 목록. 좌우 화살표로 넘겨 볼 수 있고, 첫 번째 영상이 먼저 재생된다.
 // 영상은 public/videos/ 에 웹용으로 줄인 파일(이름 끝 -web.mp4)로 넣는다.
@@ -114,12 +114,12 @@ const news = (await getCollection('news'))
   .hero h1 {
     margin: 0 0 18px;
     font-family: 'Source Sans 3', system-ui, sans-serif;
-    font-size: 2.6rem;
+    font-size: 2.3rem;
     font-weight: 700;
-    max-width: 18em;
+    text-wrap: balance; /* 줄 길이를 고르게 */
     line-height: 1.15;
     letter-spacing: -0.01em;
-    color: #1a1a1a;
+    color: var(--color-accent); /* KAIST Dark Blue */
   }
 
   .hero p {

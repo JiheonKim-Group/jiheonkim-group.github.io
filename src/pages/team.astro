@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
+import Icon from '../components/LinkIcon.astro';
 
 // 하위 폴더 이름(pi/members/alumni)으로 구성원을 나눈다.
 const team = await getCollection('team');
@@ -9,18 +10,77 @@ const byGroup = (group: string) =>
     .filter((m) => m.id.startsWith(`${group}/`))
     .sort((a, b) => (a.data.joined?.valueOf() ?? 0) - (b.data.joined?.valueOf() ?? 0));
 
+// PI: 사진 + 이름·연락처·아이콘, 그 아래 Biography(본문 글)와 경력 표
+const pis = await Promise.all(
+  byGroup('pi').map(async (entry) => ({ entry, Content: (await render(entry)).Content })),
+);
+
 const groups = [
-  { id: 'pi', title: 'Principal Investigator', members: byGroup('pi') },
   { id: 'members', title: 'Current Members', members: byGroup('members') },
   { id: 'alumni', title: 'Alumni', members: byGroup('alumni') },
 ];
 ---
 
 <BaseLayout title="Team">
-  <h1>Team</h1>
+  <section id="pi">
+    <h1 class="section-title">Principal Investigator</h1>
+
+    {pis.map(({ entry, Content }) => {
+      const d = entry.data;
+      return (
+        <article class="pi">
+          <div class="pi-top">
+            <div class="pi-photo">
+              {d.photo ? <img src={d.photo} alt={d.name} /> : <span class="photo-empty"></span>}
+            </div>
+            <div class="pi-intro">
+              <h2 class="pi-name"><strong>{d.name}</strong>{d.degree && <span class="degree">, {d.degree}</span>}</h2>
+              {d.position && <p class="pi-position">{d.position.map((line) => <span>{line}</span>)}</p>}
+              <dl class="pi-contact">
+                {d.email && <><dt>Email</dt><dd><a href={`mailto:${d.email}`}>{d.email}</a></dd></>}
+                {d.address && <><dt>Address</dt><dd>{d.address}</dd></>}
+                {d.phone && <><dt>Tel.</dt><dd><a href={`tel:${d.phone.replace(/[^+\d]/g, '')}`}>{d.phone}</a></dd></>}
+              </dl>
+              {d.links && d.links.length > 0 && (
+                <ul class="pi-links">
+                  {d.links.map((l) => (
+                    <li>
+                      <a href={l.url} target="_blank" rel="noopener" aria-label={l.label} title={l.label}>
+                        <Icon name={l.icon} label={l.label} />
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </div>
+
+          <section class="cv">
+            <h3>Biography</h3>
+            <div class="pi-bio"><Content /></div>
+          </section>
+
+          {d.cv?.map((sec) => (
+            <section class="cv">
+              <h3>{sec.heading}</h3>
+              <dl>
+                {sec.items.map((it) => (
+                  <>
+                    <dt>{it.period}</dt>
+                    <dd>{it.text}{it.advisor && <span class="advisor">{it.advisor}</span>}</dd>
+                  </>
+                ))}
+              </dl>
+            </section>
+          ))}
+        </article>
+      );
+    })}
+  </section>
+
   {groups.map((group) => group.members.length > 0 && (
     <section id={group.id}>
-      <h2>{group.title}</h2>
+      <h2 class="section-title">{group.title}</h2>
       <ul>
         {group.members.map((m) => (
           <li>
@@ -33,3 +93,193 @@ const groups = [
     </section>
   ))}
 </BaseLayout>
+
+<style>
+  /* 왼쪽 정렬 제목 + 아래 짧은 파란 막대 (아래 내용과 같은 왼쪽 선에 맞춤) */
+  .section-title {
+    max-width: 1000px;
+    margin: 48px auto 40px;
+    text-align: left;
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    font-size: 2rem;
+    font-weight: 600;
+    line-height: 1.2;
+    color: var(--color-accent);
+  }
+
+  .section-title::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 3px;
+    margin: 14px 0 0;
+    background: var(--color-accent);
+  }
+
+  .pi {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  /* 왼쪽 사진 + 오른쪽 소개 */
+  .pi-top {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 40px;
+    align-items: start;
+  }
+
+  /* 사진: 가로 3 : 세로 4, 둥근 모서리 */
+  .pi-photo img,
+  .photo-empty {
+    display: block;
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+    border-radius: 16px;
+    background: #f0f0f0;
+  }
+
+  .pi-name {
+    margin: 12px 0 16px;
+    font-size: 1.9rem;
+    font-weight: 400;
+    line-height: 1.2;
+  }
+
+  .pi-name strong {
+    font-weight: 700;
+  }
+
+  /* ", Ph.D." 는 조금 작게 */
+  .pi-name .degree {
+    font-size: 0.72em;
+    color: #444;
+  }
+
+  /* 이름 아래 직위 */
+  .pi-position {
+    margin: -6px 0 18px;
+    line-height: 1.5;
+    color: #333;
+  }
+
+  .pi-position span {
+    display: block;
+  }
+
+  .pi-position span:first-child {
+    font-weight: 600;
+  }
+
+  /* 연락처: 항목 이름(Email·Address·Tel.)과 내용을 두 열로 */
+  .pi-contact {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 4px 16px;
+    margin: 0 0 14px;
+    font-size: 0.95rem;
+  }
+
+  .pi-contact dt {
+    font-weight: 600;
+    color: #555;
+  }
+
+  .pi-contact dd {
+    margin: 0;
+  }
+
+  .pi-contact a {
+    color: inherit;
+  }
+
+  /* 아이콘 링크 (Google Scholar · LinkedIn · ORCID) */
+  .pi-links {
+    display: flex;
+    gap: 12px;
+    margin: 0 0 24px;
+    padding: 0;
+    list-style: none;
+  }
+
+  .pi-links a {
+    display: block;
+    width: 30px;
+    height: 30px;
+    transition: opacity 0.15s;
+  }
+
+  .pi-links a:hover {
+    opacity: 0.7;
+  }
+
+  .pi-bio :global(p) {
+    margin: 0;
+    line-height: 1.85;
+    color: #222;
+  }
+
+  /* 경력 표: 왼쪽 기간, 오른쪽 내용 */
+  .cv {
+    margin-top: 48px;
+  }
+
+  .cv h3 {
+    margin: 0 0 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #ddd;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--color-accent);
+  }
+
+  .cv dl {
+    display: grid;
+    grid-template-columns: 130px 1fr;
+    gap: 10px 24px;
+    margin: 0;
+  }
+
+  .cv dt {
+    color: #555;
+    white-space: nowrap;
+  }
+
+  .cv dd {
+    margin: 0;
+  }
+
+  /* 지도교수: 다음 줄에 기울임체 */
+  .advisor {
+    display: block;
+    font-size: 0.88em;
+    font-style: italic;
+    color: #555;
+  }
+
+  @media (max-width: 720px) {
+    .section-title {
+      font-size: 1.6rem;
+      margin: 32px 0 28px;
+    }
+
+    .pi-top {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    .pi-photo {
+      max-width: 200px;
+    }
+
+    .cv dl {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+
+    .cv dd {
+      margin-bottom: 10px;
+    }
+  }
+</style>
