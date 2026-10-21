@@ -1,0 +1,26 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+// src/content/team/members/ 폴더의 구성원 (들어온 순서대로)
+const members = (await getCollection('team'))
+  .filter((m) => m.id.startsWith('members/'))
+  .sort((a, b) => (a.data.joined?.valueOf() ?? 0) - (b.data.joined?.valueOf() ?? 0));
+---
+
+<BaseLayout title="Current Members">
+  <h1 class="page-title">Current Members</h1>
+  {members.length === 0 ? (
+    <p>Coming soon.</p>
+  ) : (
+    <ul>
+      {members.map((m) => (
+        <li>
+          {m.data.photo && <img src={m.data.photo} alt={m.data.name} width="120" />}
+          <strong>{m.data.name}</strong> — {m.data.role}
+          {m.data.email && <> (<a href={`mailto:${m.data.email}`}>{m.data.email}</a>)</>}
+        </li>
+      ))}
+    </ul>
+  )}
+</BaseLayout>

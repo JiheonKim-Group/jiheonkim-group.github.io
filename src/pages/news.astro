@@ -7,7 +7,7 @@ const rendered = await Promise.all(items.map(async (item) => ({ item, ...(await 
 ---
 
 <BaseLayout title="News">
-  <h1>News</h1>
+  <h1 class="page-title">News</h1>
   {rendered.length === 0 ? <p>Coming soon.</p> : rendered.map(({ item, Content }) => (
     <article>
       <h2>{item.data.title}</h2>

@@ -10,7 +10,7 @@ const photos = fs.existsSync(dir)
 ---
 
 <BaseLayout title="Gallery">
-  <h1>Gallery</h1>
+  <h1 class="page-title">Gallery</h1>
   {photos.length === 0 ? <p>Coming soon.</p> : (
     <div class="grid">
       {photos.map((f) => <img src={`/images/gallery/${f}`} alt="" loading="lazy" />)}

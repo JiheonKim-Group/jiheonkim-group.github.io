@@ -2,7 +2,7 @@
 // 하단 배너. 연락처·링크를 바꾸려면 아래 값만 고치면 된다.
 const kaistUrl = 'https://www.kaist.ac.kr/en/';
 const cbeUrl = 'https://cbe.kaist.ac.kr/';
-const pi = { name: 'Jiheon Kim', email: 'jiheon.kim@kaist.ac.kr' };
+const pi = { name: 'Jiheon Kim', email: 'jiheon.kim@kaist.ac.kr', phone: '+82\u201142\u2011350\u20113944' };
 // 주소는 줄 단위로 나눠 적는다 (한 줄 = 화면의 한 줄).
 // \u2011 은 줄이 끊기지 않는 하이픈(-), \u00a0 은 줄이 끊기지 않는 띄어쓰기다.
 const address = [
@@ -40,6 +40,8 @@ const year = new Date().getFullYear();
       <dl>
         <dt>Email</dt>
         <dd><a href={`mailto:${pi.email}`}>{pi.email}</a></dd>
+        <dt>Tel.</dt>
+        <dd><a href={`tel:${pi.phone.replace(/[^+\d]/g, '')}`}>{pi.phone}</a></dd>
         <dt>Address</dt>
         <dd>{address.map((line) => <><span class="line">{line}</span>{' '}</>)}</dd>
       </dl>

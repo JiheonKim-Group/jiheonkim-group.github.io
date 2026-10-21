@@ -1,5 +1,5 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection, render } from 'astro:content';
 
 // 링크 아이콘(public/images/logo/)과 글자색(각 로고의 대표색)
@@ -9,7 +9,7 @@ const linkStyles = {
   linkedin: { src: '/images/logo/linkedin.svg', color: '#0A66C2' },
 };
 
-// 하위 폴더 이름(pi/members/alumni)으로 구성원을 나눈다.
+// src/content/team/pi/ 폴더의 구성원(PI)
 const team = await getCollection('team');
 const byGroup = (group: string) =>
   team
@@ -20,16 +20,11 @@ const byGroup = (group: string) =>
 const pis = await Promise.all(
   byGroup('pi').map(async (entry) => ({ entry, Content: (await render(entry)).Content })),
 );
-
-const groups = [
-  { id: 'members', title: 'Current Members', members: byGroup('members') },
-  { id: 'alumni', title: 'Alumni', members: byGroup('alumni') },
-];
 ---
 
-<BaseLayout title="Team">
-  <section id="pi">
-    <h1 class="section-title">Principal Investigator</h1>
+<BaseLayout title="Principal Investigator">
+  <section>
+    <h1 class="page-title">Principal Investigator</h1>
 
     {pis.map(({ entry, Content }) => {
       const d = entry.data;
@@ -90,49 +85,9 @@ const groups = [
     })}
   </section>
 
-  {groups.map((group) => group.members.length > 0 && (
-    <section id={group.id}>
-      <h2 class="section-title">{group.title}</h2>
-      <ul>
-        {group.members.map((m) => (
-          <li>
-            {m.data.photo && <img src={m.data.photo} alt={m.data.name} width="120" />}
-            <strong>{m.data.name}</strong> — {m.data.role}
-            {m.data.email && <> (<a href={`mailto:${m.data.email}`}>{m.data.email}</a>)</>}
-          </li>
-        ))}
-      </ul>
-    </section>
-  ))}
 </BaseLayout>
 
 <style>
-  /* 왼쪽 정렬 제목 + 아래 짧은 파란 막대 (아래 내용과 같은 왼쪽 선에 맞춤) */
-  .section-title {
-    max-width: 1000px;
-    margin: 48px auto 40px;
-    text-align: left;
-    font-family: 'IBM Plex Sans', system-ui, sans-serif;
-    font-size: 2rem;
-    font-weight: 600;
-    line-height: 1.2;
-    color: var(--color-accent);
-  }
-
-  .section-title::after {
-    content: '';
-    display: block;
-    width: 60px;
-    height: 3px;
-    margin: 14px 0 0;
-    background: var(--color-accent);
-  }
-
-  .pi {
-    max-width: 1000px;
-    margin: 0 auto;
-  }
-
   /* 왼쪽 사진 + 오른쪽 소개 */
   .pi-top {
     display: grid;
@@ -284,10 +239,6 @@ const groups = [
   }
 
   @media (max-width: 720px) {
-    .section-title {
-      font-size: 1.6rem;
-      margin: 32px 0 28px;
-    }
 
     .pi-top {
       grid-template-columns: 1fr;

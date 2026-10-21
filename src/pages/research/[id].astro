@@ -12,7 +12,7 @@ const { Content } = await render(topic);
 ---
 
 <BaseLayout title={topic.data.title}>
-  <h1>{topic.data.title}</h1>
+  <h1 class="page-title">{topic.data.title}</h1>
   {topic.data.image && <img src={topic.data.image} alt={topic.data.title} />}
   <Content />
 </BaseLayout>

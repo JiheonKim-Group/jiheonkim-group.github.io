@@ -3,7 +3,7 @@
   font-family: 'Source Sans 3';
   font-style: normal;
   font-weight: 200 900;
-  font-display: swap;
+  font-display: block; /* 다른 글꼴로 잠깐 보였다 바뀌며 흔들리지 않게 */
   src: url('/fonts/source-sans-3-latin.woff2') format('woff2');
 }
 
@@ -37,6 +37,12 @@
 
 * { box-sizing: border-box; }
 
+/* 페이지마다 스크롤바가 있고 없음에 따라 화면 폭이 바뀌어 상단이 좌우로 흔들리지 않도록 스크롤바 자리를 항상 확보 */
+html { scrollbar-gutter: stable; }
+
+/* 메뉴에서 페이지 안의 칸(예: Team → PI)으로 이동할 때, 고정된 상단 메뉴에 가려지지 않게 그만큼 띄워서 멈춤 */
+[id] { scroll-margin-top: 100px; }
+
 body {
   margin: 0;
   font-family: system-ui, -apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
@@ -58,4 +64,30 @@ main,
   max-width: var(--max-width);
   margin: 0 auto;
   padding: 0 16px;
+}
+
+/* 모든 페이지 맨 위 제목: KAIST Dark Blue + 아래 짧은 밑줄 (Team 페이지 양식) */
+.page-title {
+  margin: 48px 0 40px;
+  font-family: 'IBM Plex Sans', system-ui, sans-serif;
+  font-size: 2rem;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--color-accent);
+}
+
+.page-title::after {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 3px;
+  margin-top: 14px;
+  background: var(--color-accent);
+}
+
+@media (max-width: 720px) {
+  .page-title {
+    margin: 32px 0 28px;
+    font-size: 1.6rem;
+  }
 }

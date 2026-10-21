@@ -2,12 +2,12 @@
 // 상단 메뉴. 메뉴를 추가·변경하려면 아래 목록만 고치면 된다.
 const mainLinks = [
   {
-    href: '/team',
+    href: '/team/pi',
     label: 'Team',
     children: [
-      { href: '/team#pi', label: 'Jiheon Kim (PI)' },
-      { href: '/team#members', label: 'Current Members' },
-      { href: '/team#alumni', label: 'Alumni' },
+      { href: '/team/pi', label: 'Jiheon Kim (PI)' },
+      { href: '/team/members', label: 'Current Members' },
+      { href: '/team/alumni', label: 'Alumni' },
     ],
   },
   { href: '/research', label: 'Research' },
@@ -22,7 +22,10 @@ const mainLinks = [
   <div class="inner">
     <a class="brand" href="/">
       <img class="brand-logo" src="/images/logo/kaist-logo-white.png" alt="KAIST" width="332" height="94" />
-      <span class="brand-text"><span class="brand-name">Jiheon Kim</span> <span class="brand-group">Group</span></span>
+      <span class="brand-text">
+        <span class="brand-title"><span class="brand-name">Jiheon Kim</span> <span class="brand-group">Group</span></span>
+        <span class="brand-sub">Autonomous Materials & Devices Laboratory</span>
+      </span>
     </a>
 
     <nav class="main" aria-label="Main">
@@ -51,6 +54,15 @@ const mainLinks = [
   /* 상단 배너: KAIST Medium Blue 배경 */
   .site-header {
     background: var(--color-accent-medium);
+  }
+
+  /* PC 화면: 스크롤해도 상단 메뉴가 항상 맨 위에 고정 */
+  @media (min-width: 721px) {
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
   }
 
   .inner {
@@ -82,6 +94,22 @@ const mainLinks = [
     width: auto;
     padding-right: 14px;
     border-right: 1px solid rgba(255, 255, 255, 0.45);
+  }
+
+  /* 이름 아래 작은 부제 (이름과 같은 폭으로) */
+  .brand-text {
+    display: inline-flex;
+    flex-direction: column;
+  }
+
+  .brand-sub {
+    margin-top: 1px;
+    font-size: 0.5em; /* 이름 글씨 크기에 비례 → 휴대폰에서도 같은 폭 */
+    font-weight: 400;
+    line-height: 1.2;
+    letter-spacing: 0.026em;
+    color: rgba(255, 255, 255, 0.85);
+    text-transform: none;
   }
 
   .brand-name {

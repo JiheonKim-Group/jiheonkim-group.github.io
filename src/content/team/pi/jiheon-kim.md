@@ -44,7 +44,7 @@ cv:
       - period: 2021–2022
         text: Postdoctoral Researcher, Seoul National University
         advisor: "Advisor: Prof. Taeghwan Hyeon"
-  - heading: Honors & Awards
+  - heading: Selected Honors
     items:
       - period: 2024
         text: PSK-Innox Young Scientist Award
