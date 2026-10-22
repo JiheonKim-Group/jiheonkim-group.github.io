@@ -62,6 +62,8 @@ const research = defineCollection({
     title: z.string(),
     summary: z.string().optional(),
     image: z.string().optional(),
+    imageTitle: z.string().optional(), // 선택: 그림 위에 붙는 제목
+    wide: z.boolean().default(false), // true 면 그림을 글 아래에 전체 폭으로 (글자가 많은 그림)
     order: z.number().default(0),
   }),
 });

@@ -1,17 +1,211 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 
+// 연구 주제: src/content/research/ 의 파일 1개 = 주제 1개. order 순서로 나온다.
 const topics = (await getCollection('research')).sort((a, b) => a.data.order - b.data.order);
+
+// 첫 문구. 문장을 바꾸려면 여기만 고치면 된다.
+const intro =
+  'We combine human domain expertise with laboratory automation and AI to accelerate the development of materials and devices, with a focus on decarbonization technologies.';
+
+const sections = await Promise.all(
+  topics.map(async (t) => {
+    const { Content } = await render(t);
+    return { t, Content };
+  }),
+);
 ---
 
 <BaseLayout title="Research">
   <h1 class="page-title">Research</h1>
+
   {topics.length === 0 ? <p>Coming soon.</p> : (
-    <ul>
-      {topics.map((t) => (
-        <li><a href={`/research/${t.id}`}>{t.data.title}</a>{t.data.summary && <> — {t.data.summary}</>}</li>
+    <>
+      <p class="intro">{intro}</p>
+
+      {sections.map(({ t, Content }) => (
+        <section class:list={["topic", { wide: t.data.wide }]} id={t.id}>
+          <div class="topic-text">
+            <h2>{t.data.title}</h2>
+            {t.data.summary && <p class="summary" set:html={t.data.summary} />}
+            <div class="body"><Content /></div>
+          </div>
+          {t.data.image && (
+            <figure class="topic-image">
+              {t.data.imageTitle && <p class="image-title" set:html={t.data.imageTitle} />}
+              {/* 그림을 누르면 화면 가득 크게 보인다 (아래 스크립트) */}
+              <button type="button" class="zoom" aria-label={`Enlarge: ${t.data.title}`}>
+                <img src={t.data.image} alt={t.data.title} loading="lazy" />
+              </button>
+              <figcaption>Click to enlarge</figcaption>
+            </figure>
+          )}
+        </section>
       ))}
-    </ul>
+    </>
   )}
+
+  {/* 크게 보기 창: 그림을 누르면 열리고, 아무 데나 누르거나 Esc 를 누르면 닫힌다 */}
+  <div class="lightbox" hidden>
+    <img alt="" />
+  </div>
 </BaseLayout>
+
+<script>
+  const box = document.querySelector<HTMLElement>('.lightbox');
+  const big = box?.querySelector('img');
+  if (box && big) {
+    document.querySelectorAll<HTMLButtonElement>('.zoom').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const img = btn.querySelector('img');
+        if (!img) return;
+        big.src = img.src;
+        big.alt = img.alt;
+        box.hidden = false;
+        document.body.style.overflow = 'hidden';
+      });
+    });
+    const close = () => {
+      box.hidden = true;
+      document.body.style.overflow = '';
+    };
+    box.addEventListener('click', close);
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !box.hidden) close();
+    });
+  }
+</script>
+
+<style>
+  .intro {
+    max-width: 46em;
+    margin: 0 0 48px;
+    font-size: 1.35rem;
+    font-weight: 600;
+    line-height: 1.5;
+    color: var(--color-accent);
+  }
+
+  /* 주제 1개: 왼쪽 글, 오른쪽 그림 (짝수 번째는 좌우를 바꿔 지그재그) */
+  .topic {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: 'text image';
+    gap: 48px;
+    align-items: center;
+    padding: 40px 0;
+    border-top: 1px solid #ddd;
+  }
+
+  .topic:nth-of-type(even) {
+    grid-template-areas: 'image text';
+  }
+
+  /* wide: 글자가 많은 그림은 글 아래에 글과 같은 폭으로 */
+  .topic.wide,
+  .topic.wide:nth-of-type(even) {
+    grid-template-columns: 1fr;
+    grid-template-areas: 'text' 'image';
+  }
+
+  .topic.wide .topic-text {
+    max-width: 50em;
+  }
+
+  .topic-text {
+    grid-area: text;
+  }
+
+  .topic-image {
+    grid-area: image;
+    margin: 0;
+  }
+
+  /* 그림 위 제목 (주제 파일의 imageTitle) */
+  .image-title {
+    margin: 0 0 10px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--color-accent);
+  }
+
+  .topic-image .zoom {
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: zoom-in;
+  }
+
+  .topic-image img {
+    display: block;
+    width: 100%;
+    border-radius: 12px;
+  }
+
+  .topic-image figcaption {
+    margin-top: 6px;
+    text-align: right;
+    font-size: 0.75rem;
+    color: #888;
+  }
+
+  /* 크게 보기 창 */
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: rgba(0, 0, 0, 0.85);
+    cursor: zoom-out;
+  }
+
+  .lightbox[hidden] {
+    display: none;
+  }
+
+  .lightbox img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    background: #fff;
+    border-radius: 8px;
+  }
+
+
+  .topic h2 {
+    margin: 0 0 8px;
+    font-size: 1.6rem;
+    font-weight: 700;
+    line-height: 1.25;
+    color: var(--color-accent);
+  }
+
+  .summary {
+    margin: 0 0 16px;
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: #555;
+  }
+
+  .body :global(p) {
+    margin: 0 0 12px;
+    line-height: 1.75;
+    color: #333;
+  }
+
+
+  /* 휴대폰 화면: 글 → 그림 순서로 한 줄로 */
+  @media (max-width: 900px) {
+    .topic,
+    .topic:nth-of-type(even) {
+      grid-template-columns: 1fr;
+      grid-template-areas: 'text' 'image';
+    }
+  }
+</style>
