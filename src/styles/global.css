@@ -28,7 +28,7 @@
 :root {
   --color-text: #1a1a1a;
   --color-muted: #666;
-  --color-bg: #fff;
+  --color-bg: #ececec;           /* 사이트 전체 바탕 (하단 배너·홈 첫 화면과 같은 회색) */
   --color-accent: #004191;        /* KAIST 파란색 */
   --color-accent-light: #1588ca;  /* KAIST 밝은 파란색 (로고 아래 곡선 색) */
   --color-accent-medium: #265ba5; /* KAIST Medium Blue (PANTONE 285C, 가이드 색상표 기준) */
@@ -49,6 +49,15 @@ body {
   line-height: 1.6;
   color: var(--color-text);
   background: var(--color-bg);
+  /* 내용이 짧은 페이지에서도 하단 배너가 항상 화면 맨 아래에 붙도록 (아래 흰 여백 없음) */
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+body > main {
+  flex: 1 0 auto;
+  width: 100%;
 }
 
 a { color: var(--color-accent); }

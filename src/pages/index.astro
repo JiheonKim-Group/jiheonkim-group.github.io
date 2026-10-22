@@ -2,6 +2,7 @@
 import fs from 'node:fs';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
+import captions from '../content/home-slides.json';
 
 // 첫 화면 문구. 문장을 바꾸려면 여기만 고치면 된다.
 const heroTitle = 'Accelerating the development of materials and devices for decarbonization';
@@ -20,6 +21,8 @@ const slides = fs
     src: `/home/${f}`,
     type: videoExt.test(f) ? 'video' : 'image',
     label: f.replace(/^\d+[-_]?/, '').replace(/\.[^.]+$/, '').replace(/[-_]/g, ' '),
+    // 슬라이드 아래 글: src/content/home-slides.json 에서 파일 이름 앞 번호로 찾는다
+    caption: (captions as Record<string, { text?: string; url?: string }>)[f.match(/^\d+/)?.[0] ?? ''],
   }));
 
 const news = (await getCollection('news'))
@@ -54,6 +57,16 @@ const news = (await getCollection('news'))
             <img src={v.src} class={i === 0 ? 'slide active' : 'slide'} alt={v.label} loading={i === 0 ? 'eager' : 'lazy'} />
           ),
         )}
+        {slides.map((v, i) => (
+          <div class={i === 0 ? 'caption active' : 'caption'}>
+            {v.caption?.text &&
+              (v.caption.url ? (
+                <a href={v.caption.url} target="_blank" rel="noopener" set:html={v.caption.text} />
+              ) : (
+                <span set:html={v.caption.text} />
+              ))}
+          </div>
+        ))}
         {slides.length > 1 && (
           <>
             <button class="nav prev" type="button" aria-label="Previous video">&#8249;</button>
@@ -83,19 +96,50 @@ const news = (await getCollection('news'))
   const slider = document.querySelector('.slider');
   if (slider) {
     const items = [...slider.querySelectorAll<HTMLElement>('.slide')];
+    const caps = [...slider.querySelectorAll<HTMLElement>('.caption')];
     let current = 0;
     const show = (n: number) => {
       const prev = items[current];
       if (prev instanceof HTMLVideoElement) prev.pause();
       prev.classList.remove('active');
+      caps[current]?.classList.remove('active');
       current = (n + items.length) % items.length;
       const next = items[current];
       next.classList.add('active');
+      caps[current]?.classList.add('active');
+      place();
       if (next instanceof HTMLVideoElement) {
         next.currentTime = 0;
         next.play();
       }
     };
+    // 출처 글을 실제로 보이는 영상/사진의 오른쪽 아래 끝에 맞춘다 (비율이 칸과 달라 여백이 생겨도)
+    const frame = slider.querySelector<HTMLElement>('.frame')!;
+    const place = () => {
+      const el = items[current];
+      const cap = caps[current];
+      if (!cap) return;
+      const iw = el instanceof HTMLVideoElement ? el.videoWidth : (el as HTMLImageElement).naturalWidth;
+      const ih = el instanceof HTMLVideoElement ? el.videoHeight : (el as HTMLImageElement).naturalHeight;
+      const r = el.getBoundingClientRect();
+      const f = frame.getBoundingClientRect();
+      let dw = r.width;
+      let dh = r.height;
+      if (iw && ih) {
+        const k = Math.min(r.width / iw, r.height / ih);
+        dw = iw * k;
+        dh = ih * k;
+      }
+      cap.style.top = `${r.top - f.top + (r.height + dh) / 2}px`;
+      cap.style.right = `${f.right - (r.left + (r.width + dw) / 2)}px`;
+    };
+    items.forEach((el) => {
+      el.addEventListener('loadedmetadata', place);
+      el.addEventListener('load', place);
+    });
+    window.addEventListener('resize', place);
+    place();
+
     slider.querySelector('.prev')?.addEventListener('click', () => show(current - 1));
     slider.querySelector('.next')?.addEventListener('click', () => show(current + 1));
   }
@@ -163,6 +207,7 @@ const news = (await getCollection('news'))
     position: relative;
     display: flex;
     align-items: center;
+    padding-bottom: 28px; /* 슬라이드 아래 출처 글 자리 */
   }
 
   /* 영상 칸: 높이는 Chemspeed 영상 비율(1328×836) 기준으로 고정.
@@ -190,11 +235,36 @@ const news = (await getCollection('news'))
 
   img.slide {
     object-fit: contain;
-    background: #fff;
   }
 
   .slide.active {
     display: block;
+  }
+
+  /* 슬라이드 아래 오른쪽 출처(논문) 글 */
+  .caption {
+    position: absolute;
+    top: 100%; /* 실제 위치는 아래 스크립트가 영상 크기에 맞춰 조정 */
+    right: 0;
+    display: none;
+    margin: 6px 0 0;
+    font-size: 0.75rem;
+    color: #555;
+    white-space: nowrap;
+  }
+
+  .caption.active {
+    display: block;
+  }
+
+  .caption a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .caption a:hover {
+    color: var(--color-accent);
+    text-decoration: underline;
   }
 
   /* 좌우 화살표 */
@@ -226,6 +296,11 @@ const news = (await getCollection('news'))
     right: 12px;
   }
 
+  /* 홈 화면: 첫 화면 바로 아래에 하단 배너가 이어지게 */
+  :global(.site-footer) {
+    margin-top: 0;
+  }
+
   .news {
     margin: 48px 0;
   }
@@ -243,6 +318,10 @@ const news = (await getCollection('news'))
 
     .hero h1 {
       font-size: 2rem;
+    }
+
+    .caption {
+      margin-right: 12px; /* 휴대폰: 화면 끝에 붙지 않게 */
     }
 
     .hero-inner {
