@@ -28,7 +28,7 @@
 :root {
   --color-text: #1a1a1a;
   --color-muted: #666;
-  --color-bg: #ececec;           /* 사이트 전체 바탕 (하단 배너·홈 첫 화면과 같은 회색) */
+  --color-bg: #fff;              /* 사이트 전체 바탕 (흰색) — 하단 배너·홈 첫 화면도 이 색을 따름 */
   --color-accent: #004191;        /* KAIST 파란색 */
   --color-accent-light: #1588ca;  /* KAIST 밝은 파란색 (로고 아래 곡선 색) */
   --color-accent-medium: #265ba5; /* KAIST Medium Blue (PANTONE 285C, 가이드 색상표 기준) */
@@ -47,6 +47,9 @@ body {
   margin: 0;
   font-family: system-ui, -apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
   line-height: 1.6;
+  /* 한국어도 단어(띄어쓰기) 단위로 줄바꿈 — 단어 중간에서 잘리지 않게 */
+  word-break: keep-all;
+  overflow-wrap: break-word;
   color: var(--color-text);
   background: var(--color-bg);
   /* 내용이 짧은 페이지에서도 하단 배너가 항상 화면 맨 아래에 붙도록 (아래 흰 여백 없음) */
