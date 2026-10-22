@@ -9,5 +9,5 @@ issue: "11"
 pages: "2265–2274"
 doi: "10.1039/d4dd00203b"
 image: "/images/publications/2024-digit-discov-abed.png"
-highlight: ""   # 선택: 서지정보 아래 강조 문구 (예: "Highly Cited Paper"). 비워두면 표시되지 않음
+highlight: ""
 ---

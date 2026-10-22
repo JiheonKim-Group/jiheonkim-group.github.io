@@ -2,7 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import fs from 'node:fs';
 
-// public/images/gallery/ 에 넣은 사진을 빌드 시 자동으로 모두 표시한다 (파일명 역순 = 최신순).
+// Every image in public/images/gallery/, newest first by filename.
 const dir = 'public/images/gallery';
 const photos = fs.existsSync(dir)
   ? fs.readdirSync(dir).filter((f) => /\.(jpe?g|png|webp|gif|avif)$/i.test(f)).sort().reverse()

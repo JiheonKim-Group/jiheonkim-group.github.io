@@ -1,10 +1,10 @@
 ---
-// 하단 배너. 연락처·링크를 바꾸려면 아래 값만 고치면 된다.
+// Site footer: contact details and logos.
 const kaistUrl = 'https://www.kaist.ac.kr/en/';
 const cbeUrl = 'https://cbe.kaist.ac.kr/';
 const pi = { name: 'Jiheon Kim', email: 'jiheon.kim@kaist.ac.kr', phone: '+82\u201142\u2011350\u20113944' };
-// 주소는 줄 단위로 나눠 적는다 (한 줄 = 화면의 한 줄).
-// \u2011 은 줄이 끊기지 않는 하이픈(-), \u00a0 은 줄이 끊기지 않는 띄어쓰기다.
+// One array entry per displayed line.
+// \u2011 = non-breaking hyphen, \u00a0 = non-breaking space.
 const address = [
   'Bldg. W1\u20113, Rm. 3107, KAIST, 291\u00a0Daehak\u2011ro,',
   'Yuseong\u2011gu, Daejeon\u00a034141, Republic of Korea',
@@ -14,7 +14,7 @@ const year = new Date().getFullYear();
 
 <footer class="site-footer">
   <div class="inner">
-    <!-- 두 로고는 같은 폭·같은 격자로 만들어져 있어, 마크와 글씨 줄이 위아래로 정확히 맞는다 -->
+    <!-- Both logos share the same width and grid so their marks and wordmarks align vertically -->
     <div class="logos">
       <a href={kaistUrl} target="_blank" rel="noopener">
         <img
@@ -51,7 +51,7 @@ const year = new Date().getFullYear();
 </footer>
 
 <style>
-  /* 하단 전체를 회색 띠로 덮는다 */
+  /* Full-width band */
   .site-footer {
     margin-top: 64px;
     background: var(--color-bg);
@@ -67,7 +67,7 @@ const year = new Date().getFullYear();
     gap: 32px;
   }
 
-  /* 왼쪽 로고 */
+  /* Logos (left) */
   .logos {
     flex: 0 0 440px;
   }
@@ -79,15 +79,15 @@ const year = new Date().getFullYear();
     height: auto;
   }
 
-  /* 두 로고 사이 간격: 로고 폭에 비례 (원본 격자 기준) */
+  /* Gap between logos, proportional to logo width (from the original grid) */
   .logos .cbe {
     margin-top: 4.3%;
   }
 
-  /* 오른쪽 정보 상자 */
+  /* Contact box (right) */
   .info {
     flex: 0 1 420px;
-    /* 글씨 위·아래 끝이 왼쪽 로고의 위·아래 끝과 맞도록 미세 조정 */
+    /* Nudge so the text block top/bottom lines up with the logos */
     margin-top: -3px;
     font-size: 0.875rem;
     line-height: 20px;
@@ -119,7 +119,7 @@ const year = new Date().getFullYear();
     color: #666;
   }
 
-  /* 항목 이름(Email, Address)과 내용을 두 열로 정렬 */
+  /* Two-column label/value layout */
   .info dl {
     display: grid;
     grid-template-columns: auto 1fr;
@@ -161,8 +161,8 @@ const year = new Date().getFullYear();
     font-size: 0.75rem;
   }
 
-  /* 휴대폰 화면: 로고 아래에 정보 상자 */
-  /* 넓은 화면: 홈 첫 화면과 같은 5 : 6 칸 나눔 → Contact 상자를 오른쪽 칸(영상) 가운데에 맞춘다 */
+  /* Mobile: contact box below the logos */
+  /* Desktop: same 5:6 split as the home hero, so the contact box centers under the media column */
   @media (min-width: 901px) {
     .inner {
       display: grid;
@@ -195,7 +195,7 @@ const year = new Date().getFullYear();
       max-width: 380px;
     }
 
-    /* 좁은 화면에서는 주소를 한 문단으로 자연스럽게 이어 쓴다 */
+    /* Narrow screens: let the address wrap as one paragraph */
     .info .line {
       display: inline;
     }

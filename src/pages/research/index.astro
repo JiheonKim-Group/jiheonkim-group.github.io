@@ -2,10 +2,10 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection, render } from 'astro:content';
 
-// 연구 주제: src/content/research/ 의 파일 1개 = 주제 1개. order 순서로 나온다.
+// Research topics from src/content/research/, sorted by order.
 const topics = (await getCollection('research')).sort((a, b) => a.data.order - b.data.order);
 
-// 첫 문구. 문장을 바꾸려면 여기만 고치면 된다.
+// Intro
 const intro =
   'We combine human domain expertise with laboratory automation and AI to accelerate the development of materials and devices, with a focus on decarbonization technologies.';
 
@@ -34,7 +34,7 @@ const sections = await Promise.all(
           {t.data.image && (
             <figure class="topic-image">
               {t.data.imageTitle && <p class="image-title" set:html={t.data.imageTitle} />}
-              {/* 그림을 누르면 화면 가득 크게 보인다 (아래 스크립트) */}
+              {/* Click to open in the lightbox */}
               <button type="button" class="zoom" aria-label={`Enlarge: ${t.data.title}`}>
                 <img src={t.data.image} alt={t.data.title} loading="lazy" />
               </button>
@@ -46,7 +46,7 @@ const sections = await Promise.all(
     </>
   )}
 
-  {/* 크게 보기 창: 그림을 누르면 열리고, 아무 데나 누르거나 Esc 를 누르면 닫힌다 */}
+  {/* Lightbox: click anywhere or press Esc to close */}
   <div class="lightbox" hidden>
     <img alt="" />
   </div>
@@ -87,7 +87,7 @@ const sections = await Promise.all(
     color: var(--color-accent);
   }
 
-  /* 주제 1개: 왼쪽 글, 오른쪽 그림 (짝수 번째는 좌우를 바꿔 지그재그) */
+  /* Topic: text left, figure right (alternating) */
   .topic {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -102,7 +102,7 @@ const sections = await Promise.all(
     grid-template-areas: 'image text';
   }
 
-  /* wide: 글자가 많은 그림은 글 아래에 글과 같은 폭으로 */
+  /* wide: figure below the text at full width */
   .topic.wide,
   .topic.wide:nth-of-type(even) {
     grid-template-columns: 1fr;
@@ -122,7 +122,7 @@ const sections = await Promise.all(
     margin: 0;
   }
 
-  /* 그림 위 제목 (주제 파일의 imageTitle) */
+  /* Figure heading (imageTitle) */
   .image-title {
     margin: 0 0 10px;
     font-size: 1.1rem;
@@ -152,7 +152,7 @@ const sections = await Promise.all(
     color: #888;
   }
 
-  /* 크게 보기 창 */
+  /* Lightbox */
   .lightbox {
     position: fixed;
     inset: 0;
@@ -200,7 +200,7 @@ const sections = await Promise.all(
   }
 
 
-  /* 휴대폰 화면: 글 → 그림 순서로 한 줄로 */
+  /* Mobile: text, then figure */
   @media (max-width: 900px) {
     .topic,
     .topic:nth-of-type(even) {

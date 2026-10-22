@@ -2,48 +2,48 @@ import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 
-// 구성원: team/pi, team/members, team/alumni 하위 폴더로 구분한다.
+// Team members, grouped by subfolder: team/pi, team/members, team/alumni.
 const team = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/team' }),
   schema: z.object({
     name: z.string(),
-    degree: z.string().optional(), // 예: Ph.D.
+    degree: z.string().optional(), // e.g. Ph.D.
     role: z.string(),
-    position: z.array(z.string()).optional(), // 이름 아래 직위 (줄마다 1개)
+    position: z.array(z.string()).optional(), // titles shown under the name, one per line
     email: z.string().optional(),
-    office: z.string().optional(), // 교수실 주소
-    lab: z.string().optional(), // 실험실 주소
+    office: z.string().optional(), // office address
+    lab: z.string().optional(), // lab address
     phone: z.string().optional(),
-    photo: z.string().optional(), // 예: /images/people/jiheon-kim.jpg
+    photo: z.string().optional(), // e.g. /images/people/jiheon-kim.jpg
     joined: z.coerce.date().optional(),
-    links: z.array(z.object({ icon: z.enum(['scholar', 'linkedin', 'orcid']).optional(), label: z.string(), url: z.string() })).optional(), // 아이콘 링크
+    links: z.array(z.object({ icon: z.enum(['scholar', 'linkedin', 'orcid']).optional(), label: z.string(), url: z.string() })).optional(), // profile links
     cv: z
       .array(
         z.object({
           heading: z.string(),
-          items: z.array(z.object({ period: z.coerce.string(), text: z.string(), advisor: z.string().optional() })), // period 는 2024 처럼 숫자만 적어도 됨
+          items: z.array(z.object({ period: z.coerce.string(), text: z.string(), advisor: z.string().optional() })), // period may be a bare year like 2024
         }),
       )
       .optional(),
   }),
 });
 
-// 논문: 파일 1개 = 논문 1편. 이름이 _ 로 시작하는 파일(_template.md)은 무시한다.
+// Publications, one file each. Files starting with _ (e.g. _template.md) are ignored.
 const publications = defineCollection({
   loader: glob({ pattern: ['**/*.md', '!**/_*.md'], base: './src/content/publications' }),
   schema: z.object({
     title: z.string(),
-    authors: z.string(), // 교신저자는 이름 뒤에 * (예: "Jiheon Kim*")
+    authors: z.string(), // corresponding authors marked with * (e.g. "Jiheon Kim*")
     journal: z.string(),
     year: z.number(),
-    date: z.coerce.date().optional(), // 같은 해 안에서 순서를 정할 때 사용 (출판일)
+    date: z.coerce.date().optional(), // publication date, used to order papers within a year
     volume: z.string().optional(),
     issue: z.string().optional(),
-    pages: z.string().optional(), // 쪽수 또는 논문 번호 (예: "1393–1401", "e7864662")
-    doi: z.string().optional(), // 예: 10.1038/s41563-025-00000-0
-    url: z.string().optional(), // DOI가 없을 때 연결할 주소
-    image: z.string().optional(), // 예: /images/publications/2026-nat-mater-kim.png
-    highlight: z.string().optional(), // 선택: 서지정보 아래 강조 문구 (예: "Highly Cited Paper", "Cover Article")
+    pages: z.string().optional(), // page range or article number (e.g. "1393–1401", "e7864662")
+    doi: z.string().optional(), // e.g. 10.1038/s41563-025-00000-0
+    url: z.string().optional(), // link used when there is no DOI
+    image: z.string().optional(), // e.g. /images/publications/2026-nat-mater-kim.png
+    highlight: z.string().optional(), // optional note under the citation (e.g. "Highly Cited Paper", "Cover Article")
   }),
 });
 
@@ -52,7 +52,7 @@ const news = defineCollection({
   schema: z.object({
     date: z.coerce.date(),
     title: z.string(),
-    image: z.string().optional(), // 예: /images/news/2025-award.jpg
+    image: z.string().optional(), // e.g. /images/news/2025-award.jpg
   }),
 });
 
@@ -62,8 +62,8 @@ const research = defineCollection({
     title: z.string(),
     summary: z.string().optional(),
     image: z.string().optional(),
-    imageTitle: z.string().optional(), // 선택: 그림 위에 붙는 제목
-    wide: z.boolean().default(false), // true 면 그림을 글 아래에 전체 폭으로 (글자가 많은 그림)
+    imageTitle: z.string().optional(), // optional heading shown above the figure
+    wide: z.boolean().default(false), // true: figure spans the full width below the text
     order: z.number().default(0),
   }),
 });

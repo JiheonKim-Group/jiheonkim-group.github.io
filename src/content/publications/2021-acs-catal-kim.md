@@ -9,5 +9,5 @@ issue: "24"
 pages: "15089–15097"
 doi: "10.1021/acscatal.1c03832"
 image: "/images/publications/2021-acs-catal-kim.jpeg"
-highlight: ""   # 선택: 서지정보 아래 강조 문구 (예: "Highly Cited Paper"). 비워두면 표시되지 않음
+highlight: ""
 ---

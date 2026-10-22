@@ -9,5 +9,5 @@ issue: "4"
 pages: "436–442"
 doi: "10.1038/s41563-019-0571-5"
 image: "/images/publications/2020-nat-mater-jung.png"
-highlight: ""   # 선택: 서지정보 아래 강조 문구 (예: "Highly Cited Paper"). 비워두면 표시되지 않음
+highlight: ""
 ---

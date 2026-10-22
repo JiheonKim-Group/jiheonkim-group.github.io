@@ -2,21 +2,21 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection, render } from 'astro:content';
 
-// 링크 아이콘(public/images/logo/)과 글자색(각 로고의 대표색)
+// Link icons (public/images/logo/) and their brand colors
 const linkStyles = {
   scholar: { src: '/images/logo/googlescholar.webp', color: '#4285F4' },
   orcid: { src: '/images/logo/orcid.webp', color: '#A6CE39' },
   linkedin: { src: '/images/logo/linkedin.svg', color: '#0A66C2' },
 };
 
-// src/content/team/pi/ 폴더의 구성원(PI)
+// PI entries from src/content/team/pi/
 const team = await getCollection('team');
 const byGroup = (group: string) =>
   team
     .filter((m) => m.id.startsWith(`${group}/`))
     .sort((a, b) => (a.data.joined?.valueOf() ?? 0) - (b.data.joined?.valueOf() ?? 0));
 
-// PI: 사진 + 이름·연락처·아이콘, 그 아래 Biography(본문 글)와 경력 표
+// PI: photo, name, contact and links, then biography and CV
 const pis = await Promise.all(
   byGroup('pi').map(async (entry) => ({ entry, Content: (await render(entry)).Content })),
 );
@@ -88,7 +88,7 @@ const pis = await Promise.all(
 </BaseLayout>
 
 <style>
-  /* 왼쪽 사진 + 오른쪽 소개 */
+  /* Photo left, details right */
   .pi-top {
     display: grid;
     grid-template-columns: 240px 1fr;
@@ -96,7 +96,7 @@ const pis = await Promise.all(
     align-items: start;
   }
 
-  /* 사진: 가로 3 : 세로 4, 둥근 모서리 */
+  /* Photo: 3:4, rounded corners */
   .pi-photo img,
   .photo-empty {
     display: block;
@@ -118,13 +118,13 @@ const pis = await Promise.all(
     font-weight: 700;
   }
 
-  /* ", Ph.D." 는 조금 작게 */
+  /* ", Ph.D." slightly smaller */
   .pi-name .degree {
     font-size: 0.72em;
     color: #444;
   }
 
-  /* 이름 아래 직위 */
+  /* Titles under the name */
   .pi-position {
     margin: -6px 0 18px;
     line-height: 1.5;
@@ -139,7 +139,7 @@ const pis = await Promise.all(
     font-weight: 600;
   }
 
-  /* 연락처: 항목 이름(Email·Office·Lab·Tel.)과 내용을 두 열로 */
+  /* Contact: two-column label/value layout */
   .pi-contact {
     display: grid;
     grid-template-columns: auto 1fr;
@@ -161,7 +161,7 @@ const pis = await Promise.all(
     color: inherit;
   }
 
-  /* 링크: 아이콘 + 이름, 사이에 | */
+  /* Links: icon + label, separated by | */
   .pi-links {
     display: flex;
     flex-wrap: wrap;
@@ -200,7 +200,7 @@ const pis = await Promise.all(
     color: #222;
   }
 
-  /* 경력 표: 왼쪽 기간, 오른쪽 내용 */
+  /* CV table: period left, text right */
   .cv {
     margin-top: 48px;
   }
@@ -230,7 +230,7 @@ const pis = await Promise.all(
     margin: 0;
   }
 
-  /* 지도교수: 다음 줄에 기울임체 */
+  /* Advisor: italic, on its own line */
   .advisor {
     display: block;
     font-size: 0.88em;

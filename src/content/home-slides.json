@@ -1,5 +1,5 @@
 {
-  "_설명": "홈 첫 화면 슬라이드 아래 오른쪽에 나오는 글. 키는 public/home/ 파일 이름 앞 번호. text 는 HTML(<em> 기울임, <strong> 굵게), url 은 누르면 이동할 주소(선택).",
+  "_comment": "Captions for the home hero slides, keyed by the numeric prefix of the file in public/home/. text may contain HTML; url is optional.",
   "01": {
     "text": "<em>Joule</em> <strong>9</strong>, 102213 (2025)",
     "url": "https://doi.org/10.1016/j.joule.2025.102213"

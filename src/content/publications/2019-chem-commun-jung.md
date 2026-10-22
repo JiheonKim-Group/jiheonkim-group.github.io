@@ -9,5 +9,5 @@ issue: "33"
 pages: "4757–4760"
 doi: "10.1039/c9cc01215j"
 image: "/images/publications/2019-chem-commun-jung.png"
-highlight: ""   # 선택: 서지정보 아래 강조 문구 (예: "Highly Cited Paper"). 비워두면 표시되지 않음
+highlight: ""
 ---

@@ -9,5 +9,5 @@ issue: "1"
 pages: "28–36"
 doi: "10.1038/s41929-025-01463-x"
 image: "/images/publications/2026-nat-catal-bai.png"
-highlight: ""   # 선택: 서지정보 아래 강조 문구 (예: "Highly Cited Paper"). 비워두면 표시되지 않음
+highlight: ""
 ---

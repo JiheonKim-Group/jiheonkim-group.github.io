@@ -9,5 +9,5 @@ issue: "56"
 pages: "e74459"
 doi: "10.1002/adma.74459"
 image: "/images/publications/2026-adv-mater-park.png"
-highlight: ""   # 선택: 서지정보 아래 강조 문구 (예: "Highly Cited Paper"). 비워두면 표시되지 않음
+highlight: ""
 ---

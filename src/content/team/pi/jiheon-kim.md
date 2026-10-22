@@ -2,16 +2,16 @@
 name: Jiheon Kim
 degree: Ph.D.
 role: Principal Investigator
-# 이름 아래에 줄마다 표시되는 직위
+# Titles shown under the name, one per line
 position:
   - Assistant Professor
   - Department of Chemical and Biomolecular Engineering, KAIST
 email: jiheon.kim@kaist.ac.kr
 office: Bldg. W1-3, Rm. 3107, KAIST, 291 Daehak-ro, Yuseong-gu, Daejeon 34141, Republic of Korea
 lab: Bldg. W14 (Lotte-KAIST R&D Center), Rm. 401B, KAIST, 291 Daehak-ro, Yuseong-gu, Daejeon 34141, Republic of Korea
-phone: "+82-42-350-3944"   # 예: "+82-42-350-0000" (비워두면 표시되지 않음)
+phone: "+82-42-350-3944"   # optional
 photo: /images/people/jiheon-kim.jpg
-# 링크 (아이콘 + 이름, 적은 순서대로 | 로 구분해 표시). icon 은 scholar / orcid / linkedin 중 하나.
+# Profile links; icon is one of scholar / orcid / linkedin
 links:
   - icon: scholar
     label: Google Scholar
@@ -22,7 +22,7 @@ links:
   - icon: linkedin
     label: LinkedIn
     url: https://www.linkedin.com/in/jiheonkim10
-# 아래 항목(cv)은 PI 소개 아래에 표로 나온다. period(기간)와 text(내용)를 적고, 지도교수는 advisor 에 적는다(선택, 다음 줄에 기울임체로 표시).
+# CV sections shown below the biography; advisor is optional
 cv:
   - heading: Education
     items:

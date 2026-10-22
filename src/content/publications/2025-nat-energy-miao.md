@@ -9,5 +9,5 @@ issue: "10"
 pages: "1197–1204"
 doi: "10.1038/s41560-025-01846-1"
 image: "/images/publications/2025-nat-energy-miao.png"
-highlight: ""   # 선택: 서지정보 아래 강조 문구 (예: "Highly Cited Paper"). 비워두면 표시되지 않음
+highlight: ""
 ---

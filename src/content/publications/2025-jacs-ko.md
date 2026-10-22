@@ -9,5 +9,5 @@ issue: "3"
 pages: "2369–2379"
 doi: "10.1021/jacs.4c11442"
 image: "/images/publications/2025-jacs-ko.png"
-highlight: ""   # 선택: 서지정보 아래 강조 문구 (예: "Highly Cited Paper"). 비워두면 표시되지 않음
+highlight: ""
 ---

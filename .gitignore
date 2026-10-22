@@ -15,8 +15,12 @@ npm-debug.log*
 # macOS
 .DS_Store
 
-# 영상 원본(용량이 큼)은 올리지 않는다. 홈 화면용 웹 파일은 public/home/ 에 둔다
+# raw videos (web-sized copies live in public/home/)
 public/videos/
 
-# 웹용으로 줄이기 전 원본 파일 보관 (GitHub에 올리지 않음)
+# full-size originals of images and videos
 originals/
+
+# local notes
+CLAUDE.md
+.claude/

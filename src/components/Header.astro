@@ -1,5 +1,5 @@
 ---
-// 상단 메뉴. 메뉴를 추가·변경하려면 아래 목록만 고치면 된다.
+// Site header and main navigation.
 const mainLinks = [
   {
     href: '/team/pi',
@@ -51,12 +51,12 @@ const mainLinks = [
 </header>
 
 <style>
-  /* 상단 배너: KAIST Medium Blue 배경 */
+  /* Header bar: KAIST Medium Blue */
   .site-header {
     background: var(--color-accent-medium);
   }
 
-  /* PC 화면: 스크롤해도 상단 메뉴가 항상 맨 위에 고정 */
+  /* Desktop: sticky header */
   @media (min-width: 721px) {
     .site-header {
       position: sticky;
@@ -88,7 +88,7 @@ const mainLinks = [
     gap: 14px;
   }
 
-  /* KAIST 로고와 이름 사이 얇은 세로선 */
+  /* Thin divider between the KAIST logo and the group name */
   .brand-logo {
     height: 30px;
     width: auto;
@@ -96,7 +96,7 @@ const mainLinks = [
     border-right: 1px solid rgba(255, 255, 255, 0.45);
   }
 
-  /* 이름 아래 작은 부제 (이름과 같은 폭으로) */
+  /* Subtitle under the name, matching its width */
   .brand-text {
     display: inline-flex;
     flex-direction: column;
@@ -104,7 +104,7 @@ const mainLinks = [
 
   .brand-sub {
     margin-top: 1px;
-    font-size: 0.5em; /* 이름 글씨 크기에 비례 → 휴대폰에서도 같은 폭 */
+    font-size: 0.5em; /* scales with the name so the width matches on mobile too */
     font-weight: 400;
     line-height: 1.2;
     letter-spacing: 0.026em;
@@ -128,7 +128,7 @@ const mainLinks = [
     letter-spacing: 0.08em;
   }
 
-  /* 메인 메뉴 */
+  /* Main navigation */
   .main ul {
     list-style: none;
     margin: 0;
@@ -158,7 +158,7 @@ const mainLinks = [
     color: #b9dcf4;
   }
 
-  /* Team 옆 아래 방향 세모 (CSS로 그려서 글꼴과 상관없이 선명하게) */
+  /* Dropdown caret next to Team (drawn in CSS so it stays crisp regardless of font) */
   .caret {
     display: inline-block;
     margin-left: 6px;
@@ -168,7 +168,7 @@ const mainLinks = [
     border-top: 5.5px solid currentColor;
   }
 
-  /* 하위 메뉴: 마우스를 올리거나 키보드로 이동하면 펼쳐진다 */
+  /* Submenu: opens on hover or keyboard focus */
   .dropdown {
     display: none;
     position: absolute;
@@ -201,7 +201,7 @@ const mainLinks = [
     color: var(--color-accent);
   }
 
-  /* 휴대폰 화면: 로고 아래에 메뉴를 쌓는다 */
+  /* Mobile: stack the menu under the logo */
   @media (max-width: 720px) {
     .inner {
       flex-direction: column;

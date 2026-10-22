@@ -2,7 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 
-// src/content/team/alumni/ 폴더의 구성원 (들어온 순서대로)
+// Members in src/content/team/alumni/, by join date
 const members = (await getCollection('team'))
   .filter((m) => m.id.startsWith('alumni/'))
   .sort((a, b) => (a.data.joined?.valueOf() ?? 0) - (b.data.joined?.valueOf() ?? 0));

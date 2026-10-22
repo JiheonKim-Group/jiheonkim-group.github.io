@@ -6,5 +6,5 @@ year: 2024
 date: 2024-11-18
 doi: "10.48550/arXiv.2411.11783"
 image: "/images/publications/2024-arxiv-abed.png"
-highlight: ""   # 선택: 서지정보 아래 강조 문구 (예: "Highly Cited Paper"). 비워두면 표시되지 않음
+highlight: ""
 ---

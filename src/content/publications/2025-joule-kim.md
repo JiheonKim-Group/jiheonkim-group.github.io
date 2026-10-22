@@ -9,5 +9,5 @@ issue: "12"
 pages: "102213"
 doi: "10.1016/j.joule.2025.102213"
 image: "/images/publications/2025-joule-kim.png"
-highlight: ""   # 선택: 서지정보 아래 강조 문구 (예: "Highly Cited Paper"). 비워두면 표시되지 않음
+highlight: ""
 ---

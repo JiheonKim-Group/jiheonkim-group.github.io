@@ -4,13 +4,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 import captions from '../content/home-slides.json';
 
-// 첫 화면 문구. 문장을 바꾸려면 여기만 고치면 된다.
+// Hero copy
 const heroTitle = 'Accelerating the development of materials and devices for decarbonization';
 const heroText =
   'Grounded in human domain expertise and powered by robotics and AI, we build autonomous laboratories that develop materials and optimize devices for next-generation decarbonization technologies—faster, smarter, and more reproducibly.';
 
-// 오른쪽 슬라이드: public/home/ 폴더의 영상(.mp4 .webm)·사진(.jpg .png .webp)을 파일 이름 순서로 자동 표시.
-// 순서는 파일 이름 앞 번호로 정한다 (예: 01-chemspeed.mp4, 02-ot2.mp4, 03-ocx25-dataset.webp).
+// Hero slides: every video/image in public/home/, ordered by filename
+// (e.g. 01-chemspeed.mp4, 02-ot2.mp4, 03-ocx25-dataset.webp).
 const videoExt = /\.(mp4|webm)$/i;
 const imageExt = /\.(jpe?g|png|webp|gif)$/i;
 const slides = fs
@@ -21,7 +21,7 @@ const slides = fs
     src: `/home/${f}`,
     type: videoExt.test(f) ? 'video' : 'image',
     label: f.replace(/^\d+[-_]?/, '').replace(/\.[^.]+$/, '').replace(/[-_]/g, ' '),
-    // 슬라이드 아래 글: src/content/home-slides.json 에서 파일 이름 앞 번호로 찾는다
+    // caption from src/content/home-slides.json, keyed by the numeric prefix
     caption: (captions as Record<string, { text?: string; url?: string }>)[f.match(/^\d+/)?.[0] ?? ''],
   }));
 
@@ -92,7 +92,7 @@ const news = (await getCollection('news'))
 </BaseLayout>
 
 <script>
-  // 화살표를 누르면 다음/이전 슬라이드로 바꾼다. 영상이면 처음부터 재생한다.
+  // Arrow navigation; videos restart from the beginning when shown.
   const slider = document.querySelector('.slider');
   if (slider) {
     const items = [...slider.querySelectorAll<HTMLElement>('.slide')];
@@ -113,7 +113,7 @@ const news = (await getCollection('news'))
         next.play();
       }
     };
-    // 출처 글을 실제로 보이는 영상/사진의 오른쪽 아래 끝에 맞춘다 (비율이 칸과 달라 여백이 생겨도)
+    // Align the caption with the bottom-right corner of the visible media (letterboxed or not)
     const frame = slider.querySelector<HTMLElement>('.frame')!;
     const place = () => {
       const el = items[current];
@@ -146,7 +146,7 @@ const news = (await getCollection('news'))
 </script>
 
 <style>
-  /* 첫 화면: 회색 바탕은 화면 폭 전체, 문구와 영상은 상단 메뉴와 같은 폭 안에 정렬 */
+  /* Hero: full-width background, content aligned to the header width */
   .hero {
     background: var(--color-bg);
   }
@@ -156,7 +156,7 @@ const news = (await getCollection('news'))
     margin: 0 auto;
     padding: 0 16px;
     display: grid;
-    /* 왼쪽 문구 : 오른쪽 영상 = 5 : 6 */
+    /* text : media = 5 : 6 */
     grid-template-columns: 5fr 6fr;
     gap: 48px;
     padding-top: 40px;
@@ -175,7 +175,7 @@ const news = (await getCollection('news'))
     font-family: 'IBM Plex Sans', system-ui, sans-serif;
     font-size: 2.3rem;
     font-weight: 700;
-    text-wrap: balance; /* 줄 길이를 고르게 */
+    text-wrap: balance;
     line-height: 1.15;
     letter-spacing: -0.01em;
     color: var(--color-accent); /* KAIST Dark Blue */
@@ -207,11 +207,10 @@ const news = (await getCollection('news'))
     position: relative;
     display: flex;
     align-items: center;
-    padding-bottom: 28px; /* 슬라이드 아래 출처 글 자리 */
+    padding-bottom: 28px; /* room for the caption */
   }
 
-  /* 영상 칸: 높이는 Chemspeed 영상 비율(1328×836) 기준으로 고정.
-     세로로 긴 영상은 같은 높이로 가운데에 두고, 양옆은 배경(회색) 그대로 둔다 */
+  /* Media box sized to the Chemspeed video (1328×836); taller media is centered at the same height */
   .slider {
     width: 100%;
     aspect-ratio: 1328 / 836;
@@ -219,7 +218,7 @@ const news = (await getCollection('news'))
     justify-content: center;
   }
 
-  /* 실제 영상 크기에 딱 맞는 틀 — 화살표가 영상 양 끝에 붙는다 */
+  /* Frame that hugs the media so the arrows sit on its edges */
   .frame {
     position: relative;
     height: 100%;
@@ -241,10 +240,10 @@ const news = (await getCollection('news'))
     display: block;
   }
 
-  /* 슬라이드 아래 오른쪽 출처(논문) 글 */
+  /* Source caption, bottom right */
   .caption {
     position: absolute;
-    top: 100%; /* 실제 위치는 아래 스크립트가 영상 크기에 맞춰 조정 */
+    top: 100%; /* adjusted by the script to match the media size */
     right: 0;
     display: none;
     margin: 6px 0 0;
@@ -267,7 +266,7 @@ const news = (await getCollection('news'))
     text-decoration: underline;
   }
 
-  /* 좌우 화살표 */
+  /* Prev/next arrows */
   .nav {
     position: absolute;
     top: 50%;
@@ -296,7 +295,7 @@ const news = (await getCollection('news'))
     right: 12px;
   }
 
-  /* 홈 화면: 첫 화면 바로 아래에 하단 배너가 이어지게 */
+  /* Home: footer follows the hero directly */
   :global(.site-footer) {
     margin-top: 0;
   }
@@ -305,7 +304,7 @@ const news = (await getCollection('news'))
     margin: 48px 0;
   }
 
-  /* 휴대폰 화면: 문구 위, 영상 아래 */
+  /* Mobile: text above, media below */
   @media (max-width: 900px) {
     .hero-inner {
       grid-template-columns: 1fr;
@@ -321,7 +320,7 @@ const news = (await getCollection('news'))
     }
 
     .caption {
-      margin-right: 12px; /* 휴대폰: 화면 끝에 붙지 않게 */
+      margin-right: 12px;
     }
 
     .hero-inner {
