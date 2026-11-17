@@ -61,9 +61,9 @@ const research = defineCollection({
   schema: z.object({
     title: z.string(),
     summary: z.string().optional(),
+    summaryKo: z.string().optional(), // Korean line shown under the summary
     image: z.string().optional(),
     imageTitle: z.string().optional(), // optional heading shown above the figure
-    wide: z.boolean().default(false), // true: figure spans the full width below the text
     order: z.number().default(0),
   }),
 });

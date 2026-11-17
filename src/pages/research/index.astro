@@ -5,9 +5,39 @@ import { getCollection, render } from 'astro:content';
 // Research topics from src/content/research/, sorted by order.
 const topics = (await getCollection('research')).sort((a, b) => a.data.order - b.data.order);
 
-// Intro
-const intro =
-  'We combine human domain expertise with laboratory automation and AI to accelerate the development of materials and devices, with a focus on decarbonization technologies.';
+// Video shown above the intro (YouTube embed, privacy-enhanced domain).
+const video = {
+  id: '76js2AphU5g',
+  title: '결국 돈은 이걸 가진 사람이 다 가져갑니다 (샘 올트먼·유발 하라리 외)',
+  channel: '백만수무강',
+};
+
+// Intro: a short setup, a question, and the answer. Each part has an English line with Korean underneath.
+const intro = {
+  setup: {
+    en: "AI has advanced faster than anyone expected, and in just a few years the experts' answer to \"what comes next?\" has changed many times over.",
+    ko: 'AI는 누구의 예상보다도 빠르게 발전해 왔고, "다음은 무엇인가"라는 물음에 대한 전문가들의 답 역시 불과 몇 년 사이에 여러 번 바뀌어 왔습니다.',
+  },
+  question: {
+    en: 'So what comes next?',
+    ko: '그렇다면 그 다음은 무엇일까요?',
+  },
+  // Answer: one English sentence per entry, each with its Korean line. <em class="key"> highlights a phrase.
+  answer: [
+    {
+      en: 'We believe it is still domain expertise—deep knowledge of the research field, hands-on know-how at the bench, and, grounded in <em class="key">the right scientific questions</em>, a sense of how to leverage both with automation and AI.',
+      ko: '우리는 그 답이 여전히 domain expertise, 즉 연구 분야에 대한 깊은 전문성과 손으로 익힌 지식, 그리고 <em class="key">올바른 scientific question 설정</em>을 토대로 그것을 자동화와 AI로 확장할 방향을 모색하는 것이라고 믿습니다.',
+    },
+    {
+      en: 'Robots and AI can take over part of the research, but the broad consensus is that complex, physical, hands-on tasks and experiments will take the longest to automate.',
+      ko: '로봇과 AI가 연구의 일부를 대신할 수는 있지만, 물리적으로 손을 쓰는 복잡한 작업과 실험은 자동화되기까지 가장 오래 걸릴 것이라는 데 많은 전문가의 의견이 모입니다.',
+    },
+    {
+      en: 'An automated laboratory will therefore remain constrained for years to come, and within those constraints, only hands-on experience and deep expertise tell us which experiments are worth automating, how to make that automation work, and, building on both, <em class="key">which scientific questions will create the greatest value</em>.',
+      ko: '따라서 자동화 실험실은 당분간 제약 속에서 구축될 수밖에 없고, 그 제약 안에서 어떤 실험을 자동화할 가치가 있고, 어떻게 자동화를 구현할 수 있고, 그것들을 바탕으로 <em class="key">어떤 scientific question을 던져야 최대의 가치를 만들 수 있는지</em>는 오직 손으로 익힌 경험과 깊은 전문성만이 알려 줄 수 있습니다.',
+    },
+  ],
+};
 
 const sections = await Promise.all(
   topics.map(async (t) => {
@@ -22,15 +52,38 @@ const sections = await Promise.all(
 
   {topics.length === 0 ? <p>Coming soon.</p> : (
     <>
-      <p class="intro">{intro}</p>
+      <figure class="video">
+        <div class="video-frame">
+          <iframe
+            src={`https://www.youtube-nocookie.com/embed/${video.id}`}
+            title={video.title}
+            loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen
+          ></iframe>
+        </div>
+        <figcaption>
+          <a href={`https://www.youtube.com/watch?v=${video.id}`} target="_blank" rel="noopener">{`https://www.youtube.com/watch?v=${video.id}`}</a>
+        </figcaption>
+      </figure>
 
+      <div class="intro">
+        <p class="setup">{intro.setup.en}<span class="ko">{intro.setup.ko}</span></p>
+        <p class="question">{intro.question.en}<span class="ko">{intro.question.ko}</span></p>
+        <div class="answer">
+          {intro.answer.map((s) => (
+            <p><Fragment set:html={s.en} /><span class="ko"><Fragment set:html={s.ko} /></span></p>
+          ))}
+        </div>
+      </div>
+
+      {/* Each topic: title, summary (EN + KO), figure, then body, stacked at full width */}
       {sections.map(({ t, Content }) => (
-        <section class:list={["topic", { wide: t.data.wide }]} id={t.id}>
-          <div class="topic-text">
-            <h2>{t.data.title}</h2>
-            {t.data.summary && <p class="summary" set:html={t.data.summary} />}
-            <div class="body"><Content /></div>
-          </div>
+        <section class="topic" id={t.id}>
+          <h2>{t.data.title}</h2>
+          {t.data.summary && <p class="summary" set:html={t.data.summary} />}
+          {t.data.summaryKo && <p class="summary ko" set:html={t.data.summaryKo} />}
           {t.data.image && (
             <figure class="topic-image">
               {t.data.imageTitle && <p class="image-title" set:html={t.data.imageTitle} />}
@@ -41,6 +94,8 @@ const sections = await Promise.all(
               <figcaption>Click to enlarge</figcaption>
             </figure>
           )}
+          {/* In the body, a blockquote (a line starting with ">") is the Korean line under the paragraph above it */}
+          <div class="body"><Content /></div>
         </section>
       ))}
     </>
@@ -78,48 +133,114 @@ const sections = await Promise.all(
 </script>
 
 <style>
+  /* YouTube embed above the intro: 16:9, capped width */
+  .video {
+    max-width: 760px;
+    margin: 0 auto 40px;
+  }
+
+  .video-frame {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #000;
+  }
+
+  .video-frame iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  .video figcaption {
+    margin-top: 6px;
+    text-align: right;
+    font-size: 0.8rem;
+    color: #888;
+  }
+
+  .video figcaption a {
+    color: inherit;
+  }
+
+  /* Intro: setup -> question -> answer */
   .intro {
-    max-width: 46em;
-    margin: 0 0 48px;
-    font-size: 1.35rem;
-    font-weight: 600;
-    line-height: 1.5;
+    margin: 0 0 56px;
+  }
+
+  .intro p {
+    margin: 0;
+  }
+
+  /* Korean line directly under each English line */
+  .intro .ko {
+    display: block;
+    margin-top: 6px;
+    font-size: 0.95rem;
+    font-weight: 400;
+    line-height: 1.6;
+    color: #666;
+  }
+
+  .setup {
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.25;
     color: var(--color-accent);
   }
 
-  /* Topic: text left, figure right (alternating) */
+  /* Korean under the setup and the question: blue, to match the English */
+  .setup .ko,
+  .question .ko {
+    color: var(--color-accent);
+  }
+
+  .question {
+    margin-top: 28px !important;
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--color-accent);
+  }
+
+  /* Answer: accent bar on the left, like a reply; one sentence per paragraph */
+  .answer {
+    margin-top: 20px;
+    padding: 4px 0 4px 20px;
+    border-left: 4px solid var(--color-accent-light);
+  }
+
+  .answer p {
+    font-size: 1.15rem;
+    font-weight: 400;
+    line-height: 1.6;
+    color: #222;
+  }
+
+  .answer p + p {
+    margin-top: 16px;
+  }
+
+  /* Highlighted phrases: bold, in the accent color (:global because they come from set:html) */
+  .answer :global(.key) {
+    font-style: normal;
+    font-weight: 700;
+    color: var(--color-accent-light); /* KAIST Light Blue */
+  }
+
+  /* Topic: stacked at full width */
   .topic {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-areas: 'text image';
-    gap: 48px;
-    align-items: center;
     padding: 40px 0;
     border-top: 1px solid #ddd;
   }
 
-  .topic:nth-of-type(even) {
-    grid-template-areas: 'image text';
-  }
-
-  /* wide: figure below the text at full width */
-  .topic.wide,
-  .topic.wide:nth-of-type(even) {
-    grid-template-columns: 1fr;
-    grid-template-areas: 'text' 'image';
-  }
-
-  .topic.wide .topic-text {
-    max-width: 50em;
-  }
-
-  .topic-text {
-    grid-area: text;
-  }
-
+  /* Figure between the summary and the body, same width as the video above */
   .topic-image {
-    grid-area: image;
-    margin: 0;
+    max-width: 760px;
+    margin: 24px auto 28px;
   }
 
   /* Figure heading (imageTitle) */
@@ -187,10 +308,18 @@ const sections = await Promise.all(
   }
 
   .summary {
-    margin: 0 0 16px;
+    margin: 0 0 6px;
     font-size: 1.05rem;
     font-weight: 500;
     color: #555;
+  }
+
+  /* Korean under the summary */
+  .summary.ko {
+    margin: 0 0 16px;
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: #777;
   }
 
   .body :global(p) {
@@ -199,13 +328,18 @@ const sections = await Promise.all(
     color: #333;
   }
 
-
-  /* Mobile: text, then figure */
-  @media (max-width: 900px) {
-    .topic,
-    .topic:nth-of-type(even) {
-      grid-template-columns: 1fr;
-      grid-template-areas: 'text' 'image';
-    }
+  /* Korean line under each paragraph (written as a blockquote in Markdown) */
+  .body :global(blockquote) {
+    margin: -6px 0 16px;
+    padding: 0;
+    border: 0;
   }
+
+  .body :global(blockquote p) {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.65;
+    color: #777;
+  }
+
 </style>
